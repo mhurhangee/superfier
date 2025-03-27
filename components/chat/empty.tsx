@@ -1,4 +1,4 @@
-import { PenTool } from 'lucide-react';
+import { PenTool } from 'lucide-react'
 
 export function EmptyState() {
   return (
@@ -9,5 +9,5 @@ export function EmptyState() {
         Ask me anything about blog writing and I&#39;ll do my best to assist you.
       </p>
     </div>
-  );
+  )
 }

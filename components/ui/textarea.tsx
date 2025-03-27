@@ -1,23 +1,23 @@
-import * as React from 'react';
+import * as React from 'react'
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils'
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  withCounter?: boolean;
+  withCounter?: boolean
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, withCounter, maxLength, value, onChange, ...props }, ref) => {
-    const [inputValue, setInputValue] = React.useState(value || '');
+    const [inputValue, setInputValue] = React.useState(value || '')
 
     React.useEffect(() => {
-      setInputValue(value || '');
-    }, [value]);
+      setInputValue(value || '')
+    }, [value])
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       if (maxLength && onChange) {
-        const newValue = e.target.value.slice(0, maxLength);
-        setInputValue(newValue);
+        const newValue = e.target.value.slice(0, maxLength)
+        setInputValue(newValue)
 
         // Create a new event with the modified value
         const newEvent = {
@@ -26,17 +26,17 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             ...e.target,
             value: newValue,
           },
-        } as React.ChangeEvent<HTMLTextAreaElement>;
+        } as React.ChangeEvent<HTMLTextAreaElement>
 
-        onChange(newEvent);
+        onChange(newEvent)
       } else if (onChange) {
-        setInputValue(e.target.value);
-        onChange(e);
+        setInputValue(e.target.value)
+        onChange(e)
       }
-    };
+    }
 
-    const currentLength = typeof inputValue === 'string' ? inputValue.length : 0;
-    const percentage = maxLength ? (currentLength / maxLength) * 100 : 0;
+    const currentLength = typeof inputValue === 'string' ? inputValue.length : 0
+    const percentage = maxLength ? (currentLength / maxLength) * 100 : 0
 
     if (withCounter && maxLength) {
       return (
@@ -63,7 +63,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             />
           </div>
         </div>
-      );
+      )
     }
 
     return (
@@ -78,9 +78,9 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         maxLength={maxLength}
         {...props}
       />
-    );
+    )
   }
-);
-Textarea.displayName = 'Textarea';
+)
+Textarea.displayName = 'Textarea'
 
-export { Textarea };
+export { Textarea }

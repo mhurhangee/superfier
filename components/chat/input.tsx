@@ -1,44 +1,40 @@
-'use client';
+'use client'
 
-import type React from 'react';
+import type React from 'react'
 
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { CardFooter } from '@/components/ui/card';
-import { ArrowUp, Loader2 } from 'lucide-react';
-import type { CreateMessage } from 'ai';
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
+import { CardFooter } from '@/components/ui/card'
+import { ArrowUp, Loader2 } from 'lucide-react'
+import type { CreateMessage } from 'ai'
 
 interface MessageInputProps {
-  input: string;
-  setInput: (input: string) => void;
-  append: (message: CreateMessage) => void;
-  status: 'submitted' | 'streaming' | 'ready' | 'error';
+  input: string
+  setInput: (input: string) => void
+  append: (message: CreateMessage) => void
+  status: 'submitted' | 'streaming' | 'ready' | 'error'
 }
 
-export function MessageInput({
-  input,
-  setInput,
-  append,
-  status,
-}: MessageInputProps) {
+export function MessageInput({ input, setInput, append, status }: MessageInputProps) {
   return (
     <CardFooter className="sticky bottom-0 z-10 rounded-bl-xl rounded-br-xl">
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        if (input.trim() && (status === 'ready' || status === 'error')) {
-          append({
-            role: 'user',
-            content: input,
-          });
-          setInput('');
-        }
-      }} className="w-full relative">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          if (input.trim() && (status === 'ready' || status === 'error')) {
+            append({
+              role: 'user',
+              content: input,
+            })
+            setInput('')
+          }
+        }}
+        className="w-full relative"
+      >
         <Textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={
-            'Type your message...'
-          }
+          placeholder={'Type your message...'}
           className="w-full min-h-[80px] max-h-[160px] resize-none pr-14 bg-background/50 focus:bg-background"
           disabled={status !== 'ready' && status !== 'error'}
           autoFocus
@@ -47,16 +43,13 @@ export function MessageInput({
           maxLength={500}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              if (
-                input.trim() &&
-                (status === 'ready' || status === 'error')
-              ) {
+              e.preventDefault()
+              if (input.trim() && (status === 'ready' || status === 'error')) {
                 append({
                   role: 'user',
                   content: input,
-                });
-                setInput('');
+                })
+                setInput('')
               }
             }
           }}
@@ -65,10 +58,7 @@ export function MessageInput({
           type="submit"
           size="icon"
           className="absolute right-3 top-3 h-10 w-10 rounded-full shadow-sm"
-          disabled={
-            (status !== 'ready' && status !== 'error') ||
-            input.trim() === ''
-          }
+          disabled={(status !== 'ready' && status !== 'error') || input.trim() === ''}
         >
           {status === 'submitted' || status === 'streaming' ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -79,5 +69,5 @@ export function MessageInput({
         </Button>
       </form>
     </CardFooter>
-  );
+  )
 }
