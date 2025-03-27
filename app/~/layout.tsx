@@ -1,11 +1,14 @@
 import DashSidebar from '@/components/layout/DashSidebar'
-import { SidebarInset } from '@/components/ui/sidebar'
+import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar'
 
 export default function OrgsLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <DashSidebar />
-      <SidebarInset>{children}</SidebarInset>
+      <SidebarInset>
+        <SidebarTrigger className="mt-4" />
+        {children}
+      </SidebarInset>
     </>
   )
 }
