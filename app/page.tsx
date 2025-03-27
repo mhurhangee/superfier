@@ -16,10 +16,10 @@ export default async function Home() {
       ) : (
         <>
           <SignInButton mode="modal">
-            <Button size="lg">Sign In</Button>
+            <Button size="lg" className="mr-2">Sign In</Button>
           </SignInButton>
           <SignUpButton mode="modal">
-            <Button variant="outline" size="lg">
+            <Button variant="outline" size="lg" className="ml-2">
               Sign Up
             </Button>
           </SignUpButton>
