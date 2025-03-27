@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton';
-import { UserButton } from '@clerk/nextjs';
+import { Skeleton } from '@/components/ui/skeleton'
+import { UserButton } from '@clerk/nextjs'
 
 export default function UserButtonThemed() {
   return (
@@ -19,5 +19,5 @@ export default function UserButtonThemed() {
         </div>
       }
     />
-  );
+  )
 }

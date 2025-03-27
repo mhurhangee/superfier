@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton';
-import { OrganizationList } from '@clerk/nextjs';
+import { Skeleton } from '@/components/ui/skeleton'
+import { OrganizationList } from '@clerk/nextjs'
 
 export default function OrganizationListThemed() {
   return (
@@ -24,5 +24,5 @@ export default function OrganizationListThemed() {
         </div>
       }
     />
-  );
+  )
 }

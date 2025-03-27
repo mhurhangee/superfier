@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { SignInButton, SignUpButton } from '@clerk/nextjs';
-import { auth } from '@clerk/nextjs/server';
-import Link from 'next/link';
-import { Splash } from '@/components/theme/splash';
+import { Button } from '@/components/ui/button'
+import { SignInButton, SignUpButton } from '@clerk/nextjs'
+import { auth } from '@clerk/nextjs/server'
+import Link from 'next/link'
+import { Splash } from '@/components/theme/splash'
 
 export default async function Home() {
-  const { userId } = await auth();
+  const { userId } = await auth()
 
   return (
     <Splash>
@@ -26,5 +26,5 @@ export default async function Home() {
         </>
       )}
     </Splash>
-  );
+  )
 }

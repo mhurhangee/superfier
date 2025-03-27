@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Superfier',
+  title: 'Superfier.com',
   description: 'AI-tools for small-to-medium enterprises in the UK',
   keywords: ['AI', 'GDPR', 'SME'],
   icons: {
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
       },
     ],
   },
-};
+}
 
 export default function RootLayout({
   children,

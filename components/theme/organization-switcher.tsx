@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton';
-import { OrganizationSwitcher } from '@clerk/nextjs';
+import { Skeleton } from '@/components/ui/skeleton'
+import { OrganizationSwitcher } from '@clerk/nextjs'
 
 export default function OrganizationSwitcherThemed() {
   return (
@@ -18,5 +18,5 @@ export default function OrganizationSwitcherThemed() {
         </div>
       }
     />
-  );
+  )
 }
