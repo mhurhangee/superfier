@@ -10,7 +10,7 @@ export async function Splash({
   description?: string
 }) {
   return (
-    <main className="container flex min-h-screen flex-col items-center mx-auto justify-center max-w-5xl text-center gap-6">
+    <main className="container flex h-full flex-col items-center mx-auto justify-center max-w-5xl text-center gap-6">
       <h1 className="text-5xl font-bold tracking-tighter">
         <Icon className="inline-block size-12 mr-2" />
         <Logo />
