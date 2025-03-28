@@ -44,12 +44,14 @@ export default function RootLayout({
       <html lang="en" suppressHydrationWarning>
         <body
           className={cn(
-            'min-h-screen font-mono antialiased bg-gradient-to-br from-background/50 to-background',
+            'min-h-screen font-mono antialiased',
             geistSans.variable,
             geistMono.variable
           )}
         >
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}
+          </Providers>
         </body>
       </html>
     </ClerkProvider>
