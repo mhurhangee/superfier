@@ -13,7 +13,10 @@ export function MessageList({ messages, status, lastAssistantMessageIndex }: Mes
   return (
     <div className="space-y-1">
       {messages.map((message, index) => {
-        // Skip rendering the last user message if:
+        //Hacky method to make scrolling to user message work
+        //Do not render last user message until padded AI message is streaming back
+        //TODO: Remove this hack
+        //Skip rendering the last user message if:
         // 1. It's the last message in the array
         // 2. It's a user message
         // 3. The status is 'in_progress' meaning the AI is thinking but not streaming yet

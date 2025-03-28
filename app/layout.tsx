@@ -5,6 +5,7 @@ import './globals.css'
 import { cn } from '@/lib/utils'
 import { ClerkProvider } from '@clerk/nextjs'
 import { dark } from '@clerk/themes'
+import { getEnvironment } from '@/lib/utils'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -17,7 +18,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Superfier.com',
+  title: getEnvironment() + 'Superfier.com',
   description: 'AI-tools for small-to-medium enterprises in the UK',
   keywords: ['AI', 'GDPR', 'SME'],
   icons: {
@@ -49,9 +50,7 @@ export default function RootLayout({
             geistMono.variable
           )}
         >
-          <Providers>
-            {children}
-          </Providers>
+          <Providers>{children}</Providers>
         </body>
       </html>
     </ClerkProvider>
