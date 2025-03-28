@@ -2,14 +2,31 @@
 
 import { ChatMessage } from './message'
 import type { Message } from 'ai'
+import { ActionType } from './confirmation-modal'
 
 interface MessageListProps {
   messages: Message[]
   status: string
   lastAssistantMessageIndex: number
+  setConfirmationState: (state: {
+    open: boolean;
+    action: ActionType | null;
+    index: number | null;
+  }) => void;
+  editingMessageIndex?: number | null;
+  editingMessageContent?: string;
+  setEditingMessageContent?: (content: string) => void;
 }
 
-export function MessageList({ messages, status, lastAssistantMessageIndex }: MessageListProps) {
+export function MessageList({ 
+  messages, 
+  status, 
+  lastAssistantMessageIndex, 
+  setConfirmationState,
+  editingMessageIndex = null,
+  editingMessageContent = '',
+  setEditingMessageContent = () => {}
+}: MessageListProps) {
   return (
     <div className="space-y-1">
       {messages.map((message, index) => {
@@ -34,6 +51,10 @@ export function MessageList({ messages, status, lastAssistantMessageIndex }: Mes
                 index={index}
                 status={status}
                 lastAssistantMessageIndex={lastAssistantMessageIndex}
+                setConfirmationState={setConfirmationState}
+                isEditing={editingMessageIndex === index}
+                editingContent={editingMessageIndex === index ? editingMessageContent : ''}
+                setEditingContent={setEditingMessageContent}
               />
             </div>
           )
