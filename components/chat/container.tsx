@@ -1,6 +1,5 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { toast } from 'sonner'
 import { Card, CardContent } from '@/components/ui/card'
@@ -9,6 +8,7 @@ import { EmptyState } from './empty'
 import { MessageList } from './message-list'
 import { MessageInput } from './input'
 import { ChatError } from './error'
+import { useScrollToLatestMessage } from '@/hooks/use'
 
 export function ChatContainer() {
   const { messages, input, setInput, append, status } = useChat({
@@ -17,27 +17,10 @@ export function ChatContainer() {
       toast.error('An error occured, please try again!')
     },
   })
-  const scrollViewportRef = useRef<HTMLDivElement>(null)
 
-  // Get the last assistant message to determine if it's streaming
   const lastAssistantMessageIndex = messages.findLastIndex((m) => m.role === 'assistant')
 
-  useEffect(() => {
-    const lastMessageIndex = messages.length - 1
-    if (lastMessageIndex >= 0) {
-      setTimeout(() => {
-        const lastMessageElement = document.querySelector(
-          `[data-message-role="${messages[lastMessageIndex].role}"][data-message-index="${lastMessageIndex}"]`
-        )
-        if (lastMessageElement) {
-          lastMessageElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end',
-          })
-        }
-      }, 100)
-    }
-  }, [messages])
+  useScrollToLatestMessage(messages)
 
   return (
     <div className="w-full max-w-4xl mx-auto h-full flex justify-center">
@@ -45,7 +28,6 @@ export function ChatContainer() {
         <CardContent className="flex-1 p-0 pt-6 overflow-hidden">
           <ScrollArea
             className="h-full px-6 max-h-[calc(100vh-250px)] scroll-smooth"
-            ref={scrollViewportRef}
           >
             <div className="space-y-4 pb-2">
               {messages.length === 0 ? (
