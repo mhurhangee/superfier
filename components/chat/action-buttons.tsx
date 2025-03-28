@@ -29,6 +29,20 @@ export function ActionButtons({ message, showActions, index, setConfirmationStat
                     setConfirmationState={setConfirmationState}
                 />
             )}
+            {isUserMessage && (
+                <ActionButton
+                    actionType="edit"
+                    index={index}
+                    setConfirmationState={setConfirmationState}
+                />
+            )}
+            {!isUserMessage && (
+                <ActionButton
+                    actionType="regenerate"
+                    index={index}
+                    setConfirmationState={setConfirmationState}
+                />
+            )}
         </div>
     )
 }

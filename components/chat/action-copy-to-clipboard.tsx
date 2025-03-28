@@ -24,7 +24,7 @@ export function ActionCopyToClipboard({ message }: { message: Message }) {
             <Button
                 variant="ghost"
                 size="icon"
-                className="h-5 w-5 rounded-full hover:bg-blue-500/10 hover:text-blue-500"
+                className="h-5 w-5 rounded-full"
                 onClick={copyToClipboard}
             >
                 {isCopied ? (

@@ -10,9 +10,15 @@ interface MessageAreaProps {
   messages: Message[]
   status: string
   setConfirmationState: SetConfirmationState
+  editingMessageIndex: number | null
+  editingMessageContent: string
+  setEditingMessageContent: (content: string) => void
+  setEditingMessageIndex: (index: number | null) => void
+  setMessages: (messages: Message[]) => void
+  reload: () => void
 }
 
-export function MessageArea({ messages, status, setConfirmationState }: MessageAreaProps) {
+export function MessageArea({ messages, status, setConfirmationState, editingMessageIndex, editingMessageContent, setEditingMessageContent, setEditingMessageIndex, setMessages, reload }: MessageAreaProps) {
   const lastAssistantMessageIndex = messages.findLastIndex((m) => m.role === 'assistant')
   return (
     <CardContent className="flex-1 p-0 pt-6 overflow-hidden">
@@ -26,6 +32,12 @@ export function MessageArea({ messages, status, setConfirmationState }: MessageA
               status={status}
               lastAssistantMessageIndex={lastAssistantMessageIndex}
               setConfirmationState={setConfirmationState}
+              editingMessageIndex={editingMessageIndex}
+              editingMessageContent={editingMessageContent}
+              setEditingMessageContent={setEditingMessageContent}
+              setEditingMessageIndex={setEditingMessageIndex}
+              setMessages={setMessages}
+              reload={reload}
             />
           )}
 

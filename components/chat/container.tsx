@@ -13,7 +13,7 @@ import { handleConfirmAction } from '@/lib/chat'
 
 
 export function ChatContainer() {
-  const { messages, input, setInput, append, status, setMessages } = useChat({
+  const { messages, input, setInput, append, status, setMessages, reload } = useChat({
     experimental_throttle: 50,
     onError: () => {
       toast.error('An error occured, please try again!')
@@ -28,11 +28,24 @@ export function ChatContainer() {
     index: null,
   });
 
+  const [editingMessageIndex, setEditingMessageIndex] = useState<number | null>(null);
+  const [editingMessageContent, setEditingMessageContent] = useState('');
+
   return (
     <div className="w-full max-w-4xl mx-auto h-full flex justify-center">
       <Card className="w-full min-w-xs sm:min-w-sm md:min-w-md lg:min-w-2xl xl:min-w-4xl mx-auto h-full flex flex-col border-0 bg-background">
         <ChatHeader setInput={setInput} setMessages={setMessages} />
-        <MessageArea messages={messages} status={status} setConfirmationState={setConfirmationState} />
+        <MessageArea 
+        messages={messages} 
+        status={status} 
+        setConfirmationState={setConfirmationState} 
+        editingMessageIndex={editingMessageIndex}
+        editingMessageContent={editingMessageContent}
+        setEditingMessageContent={setEditingMessageContent}
+        setEditingMessageIndex={setEditingMessageIndex}
+        setMessages={setMessages}
+        reload={reload}
+        />
         <MessageInput input={input} setInput={setInput} append={append} status={status} />
       </Card>
       <ConfirmationModal
@@ -40,10 +53,11 @@ export function ChatContainer() {
         onOpenChange={(open) => setConfirmationState({ ...confirmationState, open })}
         onConfirm={() => handleConfirmAction({
           messages,
-          input,
-          setInput,
           setMessages,
           confirmationState,
+          reload,
+          setEditingMessageIndex,
+          setEditingMessageContent
         })}
         actionType={confirmationState.action}
       />
