@@ -1,10 +1,12 @@
 'use client'
 
+import { useState } from 'react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { User, PenTool } from 'lucide-react'
 import type { Message } from 'ai'
 import { MemoizedMarkdown } from './memoized-markdown'
 import { Streaming } from './streaming'
+import { ActionButtons } from './action-buttons'
 
 interface ChatMessageProps {
   message: Message
@@ -20,6 +22,7 @@ export function ChatMessage({
   lastAssistantMessageIndex,
 }: ChatMessageProps) {
   const isUser = message.role === 'user'
+  const [showActions, setShowActions] = useState(false)
 
   return (
     <div
@@ -27,6 +30,8 @@ export function ChatMessage({
       key={index}
       data-message-role={message.role}
       data-message-index={index}
+      onMouseEnter={() => setShowActions(true)}
+      onMouseLeave={() => setShowActions(false)}
     >
       <div className="flex items-start gap-3">
         <div className="flex-shrink-0 pt-1">
@@ -45,6 +50,7 @@ export function ChatMessage({
             <MemoizedMarkdown content={message.content} id={index.toString()} />
           </div>
         </div>
+          <ActionButtons message={message} showActions={showActions} />
       </div>
       <Streaming
         status={status}
