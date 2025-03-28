@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { User, PenTool } from 'lucide-react'
+import { User, BotMessageSquare } from 'lucide-react'
 import type { Message } from 'ai'
 import { MemoizedMarkdown } from './memoized-markdown'
 import { Streaming } from './streaming'
@@ -44,7 +44,7 @@ export function ChatMessage({
                 isUser ? 'bg-primary text-primary-foreground' : 'bg-primary/10 text-primary'
               }
             >
-              {isUser ? <User className="h-3.5 w-3.5" /> : <PenTool className="h-3.5 w-3.5" />}
+              {isUser ? <User className="h-3.5 w-3.5" /> : <BotMessageSquare className="h-3.5 w-3.5" />}
             </AvatarFallback>
           </Avatar>
         </div>
