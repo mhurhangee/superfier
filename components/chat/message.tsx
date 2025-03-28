@@ -7,12 +7,14 @@ import type { Message } from 'ai'
 import { MemoizedMarkdown } from './memoized-markdown'
 import { Streaming } from './streaming'
 import { ActionButtons } from './action-buttons'
+import { SetConfirmationState } from './confirmation-modal'
 
 interface ChatMessageProps {
   message: Message
   index: number
   status: string
   lastAssistantMessageIndex: number
+  setConfirmationState: SetConfirmationState
 }
 
 export function ChatMessage({
@@ -20,6 +22,7 @@ export function ChatMessage({
   index,
   status,
   lastAssistantMessageIndex,
+  setConfirmationState
 }: ChatMessageProps) {
   const isUser = message.role === 'user'
   const [showActions, setShowActions] = useState(false)
@@ -50,7 +53,7 @@ export function ChatMessage({
             <MemoizedMarkdown content={message.content} id={index.toString()} />
           </div>
         </div>
-          <ActionButtons message={message} showActions={showActions} />
+          <ActionButtons message={message} showActions={showActions} index={index} setConfirmationState={setConfirmationState} />
       </div>
       <Streaming
         status={status}

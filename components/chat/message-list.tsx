@@ -2,14 +2,16 @@
 
 import { ChatMessage } from './message'
 import type { Message } from 'ai'
+import { SetConfirmationState } from './confirmation-modal'
 
 interface MessageListProps {
   messages: Message[]
   status: string
   lastAssistantMessageIndex: number
+  setConfirmationState: SetConfirmationState
 }
 
-export function MessageList({ messages, status, lastAssistantMessageIndex }: MessageListProps) {
+export function MessageList({ messages, status, lastAssistantMessageIndex, setConfirmationState }: MessageListProps) {
   return (
     <div className="space-y-1">
       {messages.map((message, index) => {
@@ -34,6 +36,7 @@ export function MessageList({ messages, status, lastAssistantMessageIndex }: Mes
                 index={index}
                 status={status}
                 lastAssistantMessageIndex={lastAssistantMessageIndex}
+                setConfirmationState={setConfirmationState}
               />
             </div>
           )
