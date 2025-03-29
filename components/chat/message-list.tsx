@@ -55,11 +55,11 @@ export function MessageList({
           //Skip rendering the last user message if:
           // 1. It's the last message in the array
           // 2. It's a user message
-          // 3. The status is 'in_progress' meaning the AI is thinking but not streaming yet
+          // 3. The status is 'streaming' meaning the AI is streaming back
           const isLastUserMessageWaitingForResponse =
             index === messages.length - 1 &&
             message.role === 'user' &&
-            status === 'in_progress' &&
+            status === 'streaming' &&
             index > lastAssistantMessageIndex
           // Message render
           if (!isLastUserMessageWaitingForResponse) {
