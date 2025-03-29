@@ -18,7 +18,17 @@ interface MessageAreaProps {
   reload: () => void
 }
 
-export function MessageArea({ messages, status, setConfirmationState, editingMessageIndex, editingMessageContent, setEditingMessageContent, setEditingMessageIndex, setMessages, reload }: MessageAreaProps) {
+export function MessageArea({
+  messages,
+  status,
+  setConfirmationState,
+  editingMessageIndex,
+  editingMessageContent,
+  setEditingMessageContent,
+  setEditingMessageIndex,
+  setMessages,
+  reload,
+}: MessageAreaProps) {
   const lastAssistantMessageIndex = messages.findLastIndex((m) => m.role === 'assistant')
   return (
     <CardContent className="flex-1 p-0 pt-6 overflow-hidden">

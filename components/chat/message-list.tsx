@@ -18,23 +18,36 @@ interface MessageListProps {
   reload: () => void
 }
 
-export function MessageList({ messages, status, lastAssistantMessageIndex, setConfirmationState, editingMessageIndex, setEditingMessageIndex, editingMessageContent, setEditingMessageContent, setMessages, reload }: MessageListProps) {
+export function MessageList({
+  messages,
+  status,
+  lastAssistantMessageIndex,
+  setConfirmationState,
+  editingMessageIndex,
+  setEditingMessageIndex,
+  editingMessageContent,
+  setEditingMessageContent,
+  setMessages,
+  reload,
+}: MessageListProps) {
   return (
     <div className="space-y-1">
       {messages.map((message, index) => {
         //Edit mode
         if (editingMessageIndex === index) {
           return (
-            <MessageEdit
-              editingMessageContent={editingMessageContent}
-              setEditingMessageContent={setEditingMessageContent}
-              messages={messages}
-              setMessages={setMessages}
-              setEditingMessageIndex={setEditingMessageIndex}
-              reload={reload}
-              editingMessageIndex={editingMessageIndex}
-            />
-          );
+            <div key={index}>
+              <MessageEdit
+                editingMessageContent={editingMessageContent}
+                setEditingMessageContent={setEditingMessageContent}
+                messages={messages}
+                setMessages={setMessages}
+                setEditingMessageIndex={setEditingMessageIndex}
+                reload={reload}
+                editingMessageIndex={editingMessageIndex}
+              />
+            </div>
+          )
         } else {
           //Hacky method to make scrolling to user message work
           //Do not render last user message until padded AI message is streaming back
@@ -47,7 +60,7 @@ export function MessageList({ messages, status, lastAssistantMessageIndex, setCo
             index === messages.length - 1 &&
             message.role === 'user' &&
             status === 'in_progress' &&
-            index > lastAssistantMessageIndex;
+            index > lastAssistantMessageIndex
           // Message render
           if (!isLastUserMessageWaitingForResponse) {
             return (
@@ -60,12 +73,11 @@ export function MessageList({ messages, status, lastAssistantMessageIndex, setCo
                   setConfirmationState={setConfirmationState}
                 />
               </div>
-            );
+            )
           }
-          return null;
+          return null
         }
       })}
     </div>
-  );
+  )
 }
-

@@ -22,7 +22,7 @@ export function ChatMessage({
   index,
   status,
   lastAssistantMessageIndex,
-  setConfirmationState
+  setConfirmationState,
 }: ChatMessageProps) {
   const isUser = message.role === 'user'
   const [showActions, setShowActions] = useState(false)
@@ -44,7 +44,11 @@ export function ChatMessage({
                 isUser ? 'bg-primary text-primary-foreground' : 'bg-primary/10 text-primary'
               }
             >
-              {isUser ? <User className="h-3.5 w-3.5" /> : <BotMessageSquare className="h-3.5 w-3.5" />}
+              {isUser ? (
+                <User className="h-3.5 w-3.5" />
+              ) : (
+                <BotMessageSquare className="h-3.5 w-3.5" />
+              )}
             </AvatarFallback>
           </Avatar>
         </div>
@@ -53,7 +57,12 @@ export function ChatMessage({
             <MemoizedMarkdown content={message.content} id={index.toString()} />
           </div>
         </div>
-          <ActionButtons message={message} showActions={showActions} index={index} setConfirmationState={setConfirmationState} />
+        <ActionButtons
+          message={message}
+          showActions={showActions}
+          index={index}
+          setConfirmationState={setConfirmationState}
+        />
       </div>
       <Streaming
         status={status}
