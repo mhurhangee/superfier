@@ -59,7 +59,7 @@ export function MessageList({
           const isLastUserMessageWaitingForResponse =
             index === messages.length - 1 &&
             message.role === 'user' &&
-            status === 'streaming' &&
+            status !== 'streaming' &&
             index > lastAssistantMessageIndex
           // Message render
           if (!isLastUserMessageWaitingForResponse) {
