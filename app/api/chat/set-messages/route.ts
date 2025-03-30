@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma"
-import { JsonValue } from "@prisma/client/runtime/library"
-import { auth } from "@clerk/nextjs/server"
+import { prisma } from '@/lib/prisma'
+import { JsonValue } from '@prisma/client/runtime/library'
+import { auth } from '@clerk/nextjs/server'
 
 export async function POST(req: Request) {
   const { messages, id } = await req.json()
@@ -14,11 +14,11 @@ export async function POST(req: Request) {
   await prisma.chat.update({
     where: {
       id: id,
-      userId: userId
+      userId: userId,
     },
     data: {
-      messages: messages as unknown as JsonValue[]
-    }
+      messages: messages as unknown as JsonValue[],
+    },
   })
 
   return new Response(JSON.stringify({}))

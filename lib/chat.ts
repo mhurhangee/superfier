@@ -1,8 +1,6 @@
 import { Message, generateId } from 'ai'
 import { ActionType } from '@/components/chat/confirmation-modal'
 import { toast } from 'sonner'
-import { prisma } from '@/lib/prisma'
-import { JsonValue } from '@prisma/client/runtime/library'
 
 interface handleDeleteMessageProps {
   index: number
@@ -11,7 +9,12 @@ interface handleDeleteMessageProps {
   id: string
 }
 
-const handleDeleteMessage = async ({ index, messages, setMessages, id }: handleDeleteMessageProps) => {
+const handleDeleteMessage = async ({
+  index,
+  messages,
+  setMessages,
+  id,
+}: handleDeleteMessageProps) => {
   // Delete the message and all subsequent messages
   const newMessages = messages.slice(0, index)
   setMessages(newMessages)
@@ -25,7 +28,7 @@ const handleDeleteMessage = async ({ index, messages, setMessages, id }: handleD
       body: JSON.stringify({ id, messages: newMessages }),
     })
     toast.success('Message deleted')
-  } catch (error) {
+  } catch {
     toast.error('Failed to delete message')
   }
 }
@@ -153,7 +156,6 @@ interface handleConfirmActionParams {
   setEditingMessageIndex: (index: number | null) => void
   setEditingMessageContent: (content: string) => void
   id: string
-  userId: string
 }
 
 // Main confirmation action handler - routes to specific handlers
@@ -165,7 +167,6 @@ export const handleConfirmAction = async ({
   setEditingMessageIndex,
   setEditingMessageContent,
   id,
-  userId
 }: handleConfirmActionParams) => {
   const { action, index } = confirmationState
   if (index === null) return

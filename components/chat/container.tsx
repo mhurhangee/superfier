@@ -15,10 +15,9 @@ import { Message } from 'ai'
 interface ChatContainerProps {
   id: string
   initialMessages: Message[]
-  userId: string
 }
 
-export function ChatContainer({ id, initialMessages, userId }: ChatContainerProps) {
+export function ChatContainer({ id, initialMessages }: ChatContainerProps) {
   const { messages, input, setInput, append, status, setMessages, reload } = useChat({
     id: id,
     initialMessages,
@@ -43,7 +42,7 @@ export function ChatContainer({ id, initialMessages, userId }: ChatContainerProp
   return (
     <div className="w-full max-w-4xl mx-auto h-full flex justify-center">
       <Card className="w-full min-w-xs sm:min-w-sm md:min-w-md lg:min-w-2xl xl:min-w-4xl mx-auto h-full flex flex-col border-0 bg-background">
-        <ChatHeader setInput={setInput} setMessages={setMessages} />
+        <ChatHeader />
         <MessageArea
           messages={messages}
           status={status}
@@ -68,8 +67,7 @@ export function ChatContainer({ id, initialMessages, userId }: ChatContainerProp
             reload,
             setEditingMessageIndex,
             setEditingMessageContent,
-            id,
-            userId
+            id
           })
         }
         actionType={confirmationState.action}

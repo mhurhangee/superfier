@@ -19,17 +19,20 @@ export async function POST(req: Request) {
     system: 'You are a helpful assistant. Respond to the user in Markdown format.',
     model: openai('gpt-4o-mini'),
     messages,
-    async onFinish({response}) {
+    async onFinish({ response }) {
       await prisma.chat.update({
         where: {
           id: id,
-          userId: userId
+          userId: userId,
         },
         data: {
-          messages: appendResponseMessages({messages, responseMessages: response.messages}) as unknown as JsonValue[]
-        }
+          messages: appendResponseMessages({
+            messages,
+            responseMessages: response.messages,
+          }) as unknown as JsonValue[],
+        },
       })
-    }
+    },
   })
 
   return result.toDataStreamResponse()
