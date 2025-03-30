@@ -6,6 +6,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
 import { Message } from '@ai-sdk/react'
+import { redirect } from 'next/navigation'
 
 interface ChatHeaderProps {
   setInput: (input: string) => void
@@ -14,8 +15,7 @@ interface ChatHeaderProps {
 
 export function ChatHeader({ setInput, setMessages }: ChatHeaderProps) {
   const handleNewChat = () => {
-    setInput('')
-    setMessages([])
+    redirect('/~/chat')
   }
 
   return (
