@@ -24,7 +24,7 @@ export default async function ChatPage({ params }: { params: Promise<{ id: strin
 
   return (
     <Suspense fallback={<Loader2 className="size-8 animate-spin" />}>
-      <ChatContainer id={id} initialMessages={loadedMessages || []} />
+      <ChatContainer id={id} initialMessages={loadedMessages || []} userId={userId} />
     </Suspense>
   )
 }

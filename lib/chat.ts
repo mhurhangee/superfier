@@ -1,21 +1,36 @@
 import { Message, generateId } from 'ai'
 import { ActionType } from '@/components/chat/confirmation-modal'
 import { toast } from 'sonner'
+import { prisma } from '@/lib/prisma'
+import { JsonValue } from '@prisma/client/runtime/library'
 
 interface handleDeleteMessageProps {
   index: number
   messages: Message[]
   setMessages: (messages: Message[]) => void
+  id: string
 }
 
-const handleDeleteMessage = ({ index, messages, setMessages }: handleDeleteMessageProps) => {
+const handleDeleteMessage = async ({ index, messages, setMessages, id }: handleDeleteMessageProps) => {
   // Delete the message and all subsequent messages
   const newMessages = messages.slice(0, index)
   setMessages(newMessages)
-  toast.success('Message deleted')
+  // Update databas by making api call to delete message
+  try {
+    await fetch('/api/chat/set-messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id, messages: newMessages }),
+    })
+    toast.success('Message deleted')
+  } catch (error) {
+    toast.error('Failed to delete message')
+  }
 }
 
-interface handleDeleteMessageProps {
+interface handleRegenerateResponseProps {
   index: number
   messages: Message[]
   setMessages: (messages: Message[]) => void
@@ -27,7 +42,7 @@ const handleRegenerateResponse = ({
   messages,
   setMessages,
   reload,
-}: handleDeleteMessageProps) => {
+}: handleRegenerateResponseProps) => {
   if (index % 2 === 1) {
     // If it's an AI message (odd index)
     // Get the user message before this AI message
@@ -137,23 +152,27 @@ interface handleConfirmActionParams {
   reload: () => void
   setEditingMessageIndex: (index: number | null) => void
   setEditingMessageContent: (content: string) => void
+  id: string
+  userId: string
 }
 
 // Main confirmation action handler - routes to specific handlers
-export const handleConfirmAction = ({
+export const handleConfirmAction = async ({
   messages,
   setMessages,
   confirmationState,
   reload,
   setEditingMessageIndex,
   setEditingMessageContent,
+  id,
+  userId
 }: handleConfirmActionParams) => {
   const { action, index } = confirmationState
   if (index === null) return
 
   switch (action) {
     case 'delete':
-      handleDeleteMessage({ index, messages, setMessages, reload })
+      handleDeleteMessage({ index, messages, setMessages, id })
       break
     case 'regenerate':
       handleRegenerateResponse({ index, messages, setMessages, reload })

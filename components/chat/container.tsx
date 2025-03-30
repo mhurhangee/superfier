@@ -15,9 +15,10 @@ import { Message } from 'ai'
 interface ChatContainerProps {
   id: string
   initialMessages: Message[]
+  userId: string
 }
 
-export function ChatContainer({ id, initialMessages }: ChatContainerProps) {
+export function ChatContainer({ id, initialMessages, userId }: ChatContainerProps) {
   const { messages, input, setInput, append, status, setMessages, reload } = useChat({
     id: id,
     initialMessages,
@@ -67,6 +68,8 @@ export function ChatContainer({ id, initialMessages }: ChatContainerProps) {
             reload,
             setEditingMessageIndex,
             setEditingMessageContent,
+            id,
+            userId
           })
         }
         actionType={confirmationState.action}
