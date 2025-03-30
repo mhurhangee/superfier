@@ -10,9 +10,18 @@ import { useScrollToLatestMessage } from '@/hooks/useScrollToLatestMessage'
 import { useState } from 'react'
 import { ConfirmationModal, ConfirmationState } from './confirmation-modal'
 import { handleConfirmAction } from '@/lib/chat'
+import { Message } from 'ai'
 
-export function ChatContainer() {
+interface ChatContainerProps {
+  id: string
+  initialMessages: Message[]
+}
+
+export function ChatContainer({ id, initialMessages }: ChatContainerProps) {
   const { messages, input, setInput, append, status, setMessages, reload } = useChat({
+    id: id,
+    initialMessages,
+    sendExtraMessageFields: true,
     experimental_throttle: 50,
     onError: () => {
       toast.error('An error occured, please try again!')

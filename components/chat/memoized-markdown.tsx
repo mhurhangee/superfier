@@ -3,7 +3,8 @@ import { memo, useMemo } from 'react'
 import ReactMarkdown from 'react-markdown'
 
 function parseMarkdownIntoBlocks(markdown: string): string[] {
-  const tokens = marked.lexer(markdown)
+  const safeMarkdown = markdown || ''
+  const tokens = marked.lexer(safeMarkdown)
   return tokens.map((token) => token.raw)
 }
 

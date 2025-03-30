@@ -7,6 +7,8 @@ import { Splash } from '@/components/theme/splash'
 export async function Landing() {
   const { userId } = await auth()
 
+  
+
   return (
     <div className="flex mx-auto items-center justify-center h-screen">
       <Splash>
