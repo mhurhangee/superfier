@@ -22,19 +22,22 @@ AI chat application built with AI-SDK.
 MIT License
 
 # Roadmap
+
 - [x] Basic chat
 - [x] Memoized markdown
 - [x] Chat history
 - [x] Edit, regen, delete messages
-- [ ] Delete current chat
+- [x] Delete current chat
+- [x] fix delete chat for mobile (bug with shadcn)
+- [x] Settings menu
 - [ ] Change model
 - [ ] Reasoning support
 - [ ] Change response style
 - [ ] Change assistants
-- [ ] Syntax highlighted 
+- [ ] Syntax highlighted
 - [ ] Clickable examples
 - [ ] Suggested next message
 - [ ] Web-assistance and sources
-- [ ] PDF support 
+- [ ] PDF support
 - [ ] Knowledge-base
 - [ ] Improve message display to make it update better
