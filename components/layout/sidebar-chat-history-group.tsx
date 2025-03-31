@@ -16,10 +16,11 @@ import { Button } from '@/components/ui/button'
 import { MoreVertical } from 'lucide-react'
 import Link from 'next/link'
 import { Chat } from '@/lib/categorize-chats'
-import { handleDeleteChat } from '@/lib/handle-chat-delete'
-import { usePathname } from 'next/navigation'
+import { handleDeleteChat } from '@/lib/handle-delete-chat'
+import { useRouter, usePathname } from 'next/navigation'
 
 export function ChatGroup({ chats, label }: { chats: Chat[]; label: string }) {
+  const router = useRouter()
   const pathname = usePathname()
 
   if (chats.length === 0) return null
@@ -48,7 +49,7 @@ export function ChatGroup({ chats, label }: { chats: Chat[]; label: string }) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="right" align="start">
-                  <DropdownMenuItem onClick={() => handleDeleteChat(chat.id)}>
+                  <DropdownMenuItem onClick={() => handleDeleteChat(chat.id, router)}>
                     Delete Chat
                   </DropdownMenuItem>
                   <DropdownMenuItem>Cancel</DropdownMenuItem>

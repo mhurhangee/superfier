@@ -1,6 +1,7 @@
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
-export const handleDeleteChat = async (chatId: string) => {
+export const handleDeleteChat = async (chatId: string, router: ReturnType<typeof useRouter>) => {
   try {
     const response = await fetch(`/api/chat/delete/${chatId}`, {
       method: 'DELETE',
@@ -9,8 +10,8 @@ export const handleDeleteChat = async (chatId: string) => {
     if (response.ok) {
       toast.success('Chat deleted successfully')
       // Redirect to chat page
-      // Use window.location instead of useRouter hook
-      window.location.href = '/~/chat'
+
+      router.push('/~/chat')
     } else {
       toast.error('Failed to delete chat')
     }

@@ -26,6 +26,7 @@ MIT License
 - [x] Memoized markdown
 - [x] Chat history
 - [x] Edit, regen, delete messages
+- [ ] Delete current chat
 - [ ] Change model
 - [ ] Reasoning support
 - [ ] Change response style
@@ -36,3 +37,4 @@ MIT License
 - [ ] Web-assistance and sources
 - [ ] PDF support 
 - [ ] Knowledge-base
+- [ ] Improve message display to make it update better
