@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { CardFooter } from '@/components/ui/card'
 import { ArrowUp, Loader2 } from 'lucide-react'
 import type { CreateMessage } from 'ai'
+import { handleMessageSend } from '@/lib/handle-message-send'
 
 interface MessageInputProps {
   input: string
@@ -19,16 +20,13 @@ export function MessageInput({ input, setInput, append, status }: MessageInputPr
   return (
     <CardFooter className="sticky bottom-0 z-10 rounded-bl-xl rounded-br-xl">
       <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          if (input.trim() && (status === 'ready' || status === 'error')) {
-            append({
-              role: 'user',
-              content: input,
-            })
-            setInput('')
-          }
-        }}
+        onSubmit={(e) => handleMessageSend({
+          e,
+          input,
+          setInput,
+          append,
+          status,
+        })}
         className="w-full relative"
       >
         <Textarea
@@ -43,14 +41,13 @@ export function MessageInput({ input, setInput, append, status }: MessageInputPr
           maxLength={500}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault()
-              if (input.trim() && (status === 'ready' || status === 'error')) {
-                append({
-                  role: 'user',
-                  content: input,
-                })
-                setInput('')
-              }
+              handleMessageSend({
+                e,
+                input,
+                setInput,
+                append,
+                status,
+              })
             }
           }}
         />

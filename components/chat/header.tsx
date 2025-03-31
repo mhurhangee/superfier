@@ -5,12 +5,11 @@ import { CardTitle, CardHeader } from '@/components/ui/card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { handleNewChat } from '@/lib/handle-new-chat'
+import { useRouter } from 'next/navigation'
 
 export function ChatHeader() {
-  const handleNewChat = () => {
-    redirect('/~/chat')
-  }
+  const router = useRouter()
 
   return (
     <CardHeader className="flex items-center justify-between">
@@ -20,7 +19,7 @@ export function ChatHeader() {
       <Tooltip>
         <TooltipContent>New chat</TooltipContent>
         <TooltipTrigger asChild>
-          <Button onClick={handleNewChat} size="icon">
+          <Button onClick={() => handleNewChat(router)} size="icon">
             <PlusIcon className="inline size-6" />
           </Button>
         </TooltipTrigger>

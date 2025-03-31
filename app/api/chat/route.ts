@@ -20,12 +20,20 @@ export async function POST(req: Request) {
     model: openai('gpt-4o-mini'),
     messages,
     async onFinish({ response }) {
-      await prisma.chat.update({
+      await prisma.chat.upsert({
         where: {
           id: id,
           userId: userId,
         },
-        data: {
+        create: {
+          id: id,
+          userId: userId,
+          messages: appendResponseMessages({
+            messages,
+            responseMessages: response.messages,
+          }) as unknown as JsonValue[],
+        },
+        update: {
           messages: appendResponseMessages({
             messages,
             responseMessages: response.messages,
