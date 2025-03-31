@@ -4,6 +4,7 @@ import { Loader2 } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@clerk/nextjs/server'
 import { Message } from 'ai'
+import { redirect } from 'next/navigation'
 
 export default async function ChatPage({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id
@@ -19,6 +20,10 @@ export default async function ChatPage({ params }: { params: Promise<{ id: strin
       userId: userId,
     },
   })
+
+  if (!loadedChat) {
+    return redirect('/~/chat')
+  }
 
   const loadedMessages = loadedChat?.messages as unknown as Message[]
 
