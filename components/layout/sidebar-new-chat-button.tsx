@@ -1,7 +1,7 @@
 'use client'
 
 import { Plus } from 'lucide-react'
-import { SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar'
+import { SidebarMenuItem, SidebarMenuButton, SidebarGroup } from '@/components/ui/sidebar'
 import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
 
@@ -32,11 +32,13 @@ export function NewChatButton() {
   }
 
   return (
+    <SidebarGroup>
     <SidebarMenuItem>
       <SidebarMenuButton onClick={handleNewChat}>
         <Plus className="h-4 w-4" />
         <span>New chat</span>
       </SidebarMenuButton>
     </SidebarMenuItem>
+    </SidebarGroup>
   )
 }

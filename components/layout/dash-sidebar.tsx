@@ -12,7 +12,7 @@ export default function DashSidebar() {
       <SidebarHeader>
         <OrganizationSwitcherThemed />
       </SidebarHeader>
-      <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1 overflow-y-auto">
         <SidebarMain />
       </ScrollArea>
       <SidebarFooter className="flex-none">

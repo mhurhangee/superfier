@@ -1,4 +1,3 @@
-
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 
@@ -17,10 +16,9 @@ export async function GET() {
             }
         },
         orderBy: {
-            createdAt: 'desc',
+            updatedAt: 'desc',
         },
     })
 
     return new Response(JSON.stringify(chats))
 }
-    
