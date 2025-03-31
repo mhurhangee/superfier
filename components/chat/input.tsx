@@ -20,13 +20,15 @@ export function MessageInput({ input, setInput, append, status }: MessageInputPr
   return (
     <CardFooter className="sticky bottom-0 z-10 rounded-bl-xl rounded-br-xl">
       <form
-        onSubmit={(e) => handleMessageSend({
-          e,
-          input,
-          setInput,
-          append,
-          status,
-        })}
+        onSubmit={(e) =>
+          handleMessageSend({
+            e,
+            input,
+            setInput,
+            append,
+            status,
+          })
+        }
         className="w-full relative"
       >
         <Textarea

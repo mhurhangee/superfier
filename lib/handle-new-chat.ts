@@ -5,7 +5,6 @@ import { mutate } from 'swr'
 import { toast } from 'sonner'
 
 export const handleNewChat = async (router: ReturnType<typeof useRouter>) => {
-
   try {
     const response = await fetch('/api/chat/create', {
       method: 'POST',

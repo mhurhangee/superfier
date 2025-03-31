@@ -14,6 +14,4 @@ export function getEnvironment() {
   return ''
 }
 
-export const fetcher = (...args: [string]) => fetch(...args).then(res => res.json())
-
-
+export const fetcher = (...args: [string]) => fetch(...args).then((res) => res.json())

@@ -10,7 +10,7 @@ export function NewChatButton() {
   return (
     <SidebarGroup>
       <SidebarMenuItem>
-        <SidebarMenuButton onClick={() => handleNewChat(router)} >
+        <SidebarMenuButton onClick={() => handleNewChat(router)}>
           <Plus className="h-4 w-4" />
           <span>New chat</span>
         </SidebarMenuButton>

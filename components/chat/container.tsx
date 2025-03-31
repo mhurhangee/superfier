@@ -67,7 +67,7 @@ export function ChatContainer({ id, initialMessages }: ChatContainerProps) {
             reload,
             setEditingMessageIndex,
             setEditingMessageContent,
-            id
+            id,
           })
         }
         actionType={confirmationState.action}

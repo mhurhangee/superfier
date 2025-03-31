@@ -5,7 +5,6 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarGroupLabel,
 } from '@/components/ui/sidebar'
 import Link from 'next/link'
 import { Home } from 'lucide-react'
