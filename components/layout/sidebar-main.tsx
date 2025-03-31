@@ -5,6 +5,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarGroupLabel,
 } from '@/components/ui/sidebar'
 import Link from 'next/link'
 import { Home } from 'lucide-react'
@@ -16,7 +17,7 @@ export function SidebarMain() {
     <SidebarGroup>
       <SidebarGroupContent>
         <SidebarMenu>
-          <SidebarMenuItem>
+          <SidebarMenuItem className="ml-2 mr-2">
             <SidebarMenuButton asChild isActive={pathname === '/~'}>
               <Link href={`/~`} className="w-full">
                 <Home className="h-4 w-4 mr-2" />

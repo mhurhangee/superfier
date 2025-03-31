@@ -1,42 +1,61 @@
-import { SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar'
-import Link from 'next/link'
-import { BotMessageSquare, Plus } from 'lucide-react'
+import { SidebarMenuItem, SidebarMenuButton, SidebarGroup, SidebarGroupLabel, SidebarGroupContent } from '@/components/ui/sidebar'
+import { BotMessageSquare, ChevronRight } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { useChatHistory } from '@/hooks/use-chat-history'
+import { NewChatButton } from './sidebar-new-chat-button'
+import Link from 'next/link'
+import { Message } from 'ai'
+
+interface Chat {
+    id: string
+    messages: Message[]
+}
 
 export function SidebarChat() {
-  const pathname = usePathname()
+    const pathname = usePathname()
 
-  if (!pathname.startsWith('/~/chat')) {
+    const { chats, isLoading } = useChatHistory()
+
     return (
-      <SidebarMenuItem>
-        <SidebarMenuButton asChild>
-          <Link href={`/~/chat`} className="w-full">
-            <BotMessageSquare className="h-4 w-4 mr-2" />
-            <span>Chat</span>
-          </Link>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
-    )
-  }
+        <Collapsible className="group/collapsible">
+            <SidebarGroup>
+                <CollapsibleTrigger>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton asChild isActive={pathname.startsWith('/~/chat')}>
+                            <span>
+                                <BotMessageSquare className="h-4 w-4 mr-2" />
+                                Chat
+                                <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                            </span>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                <NewChatButton />
+                <SidebarGroupLabel>
+                    <span>Previous chats</span>
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                    {isLoading ? (
+                        <SidebarMenuItem>
+                            <SidebarMenuButton>
+                                <span>Loading...</span>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
 
-  return (
-    <>
-      <SidebarMenuItem>
-        <SidebarMenuButton asChild isActive={pathname.startsWith('/~/chat')}>
-          <Link href={`/~/chat`} className="w-full">
-            <BotMessageSquare className="h-4 w-4 mr-2" />
-            <span>Chat</span>
-          </Link>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
-      <SidebarMenuItem>
-        <SidebarMenuButton asChild>
-          <Link href={`/~/chat`} className="w-full">
-            <Plus className="h-4 w-4 mr-2" />
-            <span>New chat</span>
-          </Link>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
-    </>
-  )
+                    ) : chats.map((chat: Chat) => (
+                        <SidebarMenuItem key={chat.id}>
+                            <SidebarMenuButton asChild>
+                                <Link href={`/~/chat/${chat.id}`} className="w-full truncate">
+                                    <span className="w-48 truncate">{chat.messages[0].content}</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    ))}
+                </SidebarGroupContent>
+                </CollapsibleContent>
+            </SidebarGroup>
+        </Collapsible>
+    )
 }
