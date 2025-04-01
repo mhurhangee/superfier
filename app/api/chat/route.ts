@@ -4,6 +4,7 @@ import { JsonValue } from '@prisma/client/runtime/library'
 import { auth } from '@clerk/nextjs/server'
 import { modelSelector } from '@/lib/model-selector'
 import { promptBuilder } from '@/lib/prompt-builder'
+import { AnthropicProviderOptions } from '@ai-sdk/anthropic'
 
 export const maxDuration = 60
 
@@ -18,11 +19,6 @@ export async function POST(req: Request) {
 
   const builtSystemPrompt = promptBuilder(persona, creativity, responseLength)
 
-  console.log('Selected model:', selectedModel)
-  console.log('Selected temperature:', selectedTemperature)
-  console.log('Selected max tokens:', selectedMaxTokens)
-  console.log('Built system prompt:', builtSystemPrompt)
-
   const { userId } = await auth()
 
   if (!userId) {
@@ -35,6 +31,14 @@ export async function POST(req: Request) {
     temperature: selectedTemperature,
     maxTokens: selectedMaxTokens,
     messages,
+    providerOptions:
+      model === 'claude'
+        ? {
+            anthropic: {
+              thinking: { type: 'enabled', budgetTokens: 12000 },
+            } satisfies AnthropicProviderOptions,
+          }
+        : {},
     async onFinish({ response }) {
       await prisma.chat.upsert({
         where: {
@@ -71,5 +75,7 @@ export async function POST(req: Request) {
     },
   })
 
-  return result.toDataStreamResponse()
+  return result.toDataStreamResponse({
+    sendReasoning: true,
+  })
 }

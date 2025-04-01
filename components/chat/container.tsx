@@ -7,7 +7,7 @@ import { MessageInput } from './input'
 import { ChatHeader } from './header'
 import { MessageArea } from './message-area'
 import { useScrollToLatestMessage } from '@/hooks/useScrollToLatestMessage'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { ConfirmationModal, ConfirmationState } from './confirmation-modal'
 import { handleConfirmAction } from '@/lib/chat'
 import { Message } from 'ai'
@@ -21,16 +21,17 @@ interface ChatContainerProps {
 
 export function ChatContainer({ id, initialMessages, initialSettings }: ChatContainerProps) {
   const { getAIOptions, updateSettings } = useChatSettings()
+  const initializedRef = useRef(false)
 
   useEffect(() => {
-    if (!initialSettings) return
-    console.log('Initial settings container:', initialSettings)
+    if (!initialSettings || initializedRef.current) return
     updateSettings('model', initialSettings.model)
     updateSettings('persona', initialSettings.persona)
     updateSettings('creativity', initialSettings.creativity)
     updateSettings('responseLength', initialSettings.responseLength)
-    console.log('AI options container:', getAIOptions())
-  }, [initialSettings, updateSettings, getAIOptions])
+    initializedRef.current = true
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialSettings])
 
   const { messages, input, setInput, append, status, setMessages, reload } = useChat({
     id: id,
@@ -40,7 +41,8 @@ export function ChatContainer({ id, initialMessages, initialSettings }: ChatCont
     },
     sendExtraMessageFields: true,
     experimental_throttle: 50,
-    onError: () => {
+    onError: (error: Error) => {
+      console.error(error)
       toast.error('An error occured, please try again!')
     },
   })

@@ -7,15 +7,15 @@ AI chat application built with AI-SDK.
 - Chat with AI-powered agents
 - Save and manage chat history
 - Responsive design for all devices
-- Customizable theme (Shadcn UI)
+- Customizable theme
 
 ## Tech Stack
 
-- Next.js
-- Tailwind CSS
+- Next.js (app router)
+- Tailwind CSS / Shadcn UI
 - Clerk / Auth
 - Prisma / Postgres
-- AI SDK / OpenAI
+- AI SDK / OpenAI / Anthropic
 
 ## License
 
@@ -30,10 +30,10 @@ MIT License
 - [x] Delete current chat
 - [x] fix delete chat for mobile (bug with shadcn)
 - [x] Settings menu
-- [ ] Change model
-- [ ] Reasoning support
-- [ ] Change response style
-- [ ] Change assistants
+- [x] Change model
+- [x] Reasoning support
+- [x] Change response style
+- [x] Change assistants
 - [ ] Syntax highlighted
 - [ ] Clickable examples
 - [ ] Suggested next message
