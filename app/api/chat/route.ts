@@ -53,7 +53,7 @@ export async function POST(req: Request) {
             persona,
             creativity,
             responseLength,
-          } as unknown as JsonValue,
+          },
         },
         update: {
           messages: appendResponseMessages({
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
             persona,
             creativity,
             responseLength,
-          } as unknown as JsonValue,
+          },
         },
       })
     },
