@@ -41,7 +41,8 @@ export function ChatContainer({ id, initialMessages, initialSettings }: ChatCont
     },
     sendExtraMessageFields: true,
     experimental_throttle: 50,
-    onError: () => {
+    onError: (error: Error) => {
+      console.error(error)
       toast.error('An error occured, please try again!')
     },
   })

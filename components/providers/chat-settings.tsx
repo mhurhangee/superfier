@@ -15,6 +15,7 @@ import {
   PenLine,
   FileText,
   Glasses,
+  Brain,
 } from 'lucide-react'
 
 import * as React from 'react'
@@ -32,18 +33,24 @@ export const modelOptions = [
   {
     value: 'gpt-4o-mini',
     label: 'Speed',
-    description: 'Faster responses, less quality',
+    description: 'Faster responses, but lower quality',
     icon: <Rabbit className="h-4 w-4" />,
   },
   {
     value: 'gpt-4o',
     label: 'Quality',
-    description: 'Slower responses, better quality',
+    description: 'Improved quality, but slower',
     icon: <Turtle className="h-4 w-4" />,
+  },
+  {
+    value: 'claude',
+    label: 'Reasoning',
+    description: 'Excellent at coding and technical tasks',
+    icon: <Brain className="h-4 w-4" />,
   },
 ]
 
-export type Model = 'gpt-4o' | 'gpt-4o-mini'
+export type Model = 'gpt-4o' | 'gpt-4o-mini' | 'claude'
 
 export const personaOptions = [
   {

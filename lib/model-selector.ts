@@ -1,4 +1,5 @@
 import { openai } from '@ai-sdk/openai'
+import { anthropic } from '@ai-sdk/anthropic'
 import { Model } from '@/components/providers/chat-settings'
 
 export const modelSelector = (model: Model, creativity: string, responseLength: string) => {
@@ -11,6 +12,9 @@ export const modelSelector = (model: Model, creativity: string, responseLength: 
       break
     case 'gpt-4o':
       selectedModel = openai.responses('gpt-4o')
+      break
+    case 'claude':
+      selectedModel = anthropic('claude-3-7-sonnet-20250219')
       break
     default:
       selectedModel = openai.responses('gpt-4o-mini')
