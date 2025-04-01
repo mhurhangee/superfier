@@ -1,7 +1,18 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
+
+/* Hide scrollbars but maintain functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
 
 @theme inline {
   --color-background: var(--background);
