@@ -1,107 +1,124 @@
-'use client'
+"use client"
 
-import { BotMessageSquareIcon, PlusIcon, Trash, Settings, Sparkles, AlignJustify, Cpu, UserCircle, ChevronUp } from 'lucide-react'
-import { CardTitle, CardHeader } from '@/components/ui/card'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { Button } from '@/components/ui/button'
-import { handleNewChat } from '@/lib/handle-new-chat'
-import { handleDeleteChat } from '@/lib/handle-delete-chat'
-import { useRouter, usePathname } from 'next/navigation'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Slider } from '@/components/ui/slider'
+import * as React from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { PlusCircle, Trash2, Cpu, UserCircle, Sparkles, AlignJustify, ChevronUp, ChevronDown } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Slider } from "@/components/ui/slider"
+import { Input } from "@/components/ui/input"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  useChatSettings,
+  modelOptions,
+  personaOptions,
+  responseLengthOptions,
+  getSettingLabel,
+} from "@/components/providers/chat-settings"
 
-// Define options for each setting
-const modelOptions = [
-  { value: "gpt-4o", label: "GPT-4o" },
-  { value: "gpt-4-turbo", label: "GPT-4 Turbo" },
-  { value: "gpt-3.5-turbo", label: "GPT-3.5 Turbo" },
-  { value: "claude-3-opus", label: "Claude 3 Opus" },
-  { value: "claude-3-sonnet", label: "Claude 3 Sonnet" },
-]
-
-const personaOptions = [
-  { value: "helpful", label: "Helpful Assistant" },
-  { value: "creative", label: "Creative Writer" },
-  { value: "technical", label: "Technical Expert" },
-  { value: "concise", label: "Concise Responder" },
-  { value: "friendly", label: "Friendly Conversationalist" },
-]
-
-const responseLengthOptions = [
-  { value: "short", label: "Short" },
-  { value: "medium", label: "Medium" },
-  { value: "long", label: "Long" },
-  { value: "detailed", label: "Detailed" },
-]
-
-// Define types for our chat settings
-interface ChatSettings {
-  model: string
-  persona: string
-  creativity: number
-  responseLength: string
+interface ChatHeaderProps {
+  title?: string
+  onNewChat?: () => void
+  onDeleteChat?: () => void
+  onTitleChange?: (title: string) => void
 }
 
-export function ChatHeader() {
-  const router = useRouter()
-  const chatId = usePathname().split('/').pop() || ''
-  const [isSettingsOpen, setIsSettingsOpen] = useState(true)
-    // Initialize settings with default values
-    const [settings, setSettings] = useState<ChatSettings>({
-      model: "gpt-4o",
-      persona: "helpful",
-      creativity: 0.7,
-      responseLength: "medium",
-    })
-  
-      // Get label for a value
-  const getLabel = (options: { value: string; label: string }[], value: string) => {
-    return options.find((option) => option.value === value)?.label || value
+export function ChatHeader({
+  title = "New Chat",
+  onNewChat = () => {},
+  onDeleteChat = () => {},
+  onTitleChange = () => {},
+}: ChatHeaderProps) {
+  const [isEditing, setIsEditing] = React.useState(false)
+  const [chatTitle, setChatTitle] = React.useState(title)
+
+  // Use the chat settings context
+  const { settings, updateSettings, isSettingsOpen, setIsSettingsOpen } = useChatSettings()
+
+  // Handle title edit
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setChatTitle(e.target.value)
   }
 
-  const updateSettings = (key: keyof ChatSettings, value: any) => {
-    setSettings((prev) => ({ ...prev, [key]: value }))
+  const handleTitleSubmit = () => {
+    setIsEditing(false)
+    onTitleChange(chatTitle)
   }
 
   return (
-    <CardHeader>
-      <div className="flex items-center justify-between">
-        <CardTitle>
-          <BotMessageSquareIcon className="inline size-6 ml-4" /> Chat
-        </CardTitle>
-        <div className="flex items-center gap-2">
-          <Tooltip>
-            <TooltipContent>{isSettingsOpen ? "Hide settings" : "Show settings"}</TooltipContent>
-            <TooltipTrigger asChild>
-              <Button size="icon" variant="ghost" onClick={() => setIsSettingsOpen(!isSettingsOpen)}>
-                {isSettingsOpen ? <ChevronUp className="inline size-4" /> : <Settings className="inline size-4" />}
-              </Button>
-            </TooltipTrigger>
-          </Tooltip>
-          <Tooltip>
-            <TooltipContent>Delete chat</TooltipContent>
-            <TooltipTrigger asChild>
-              <Button size="icon" variant="ghost" onClick={() => handleDeleteChat(chatId, router)}>
-                <Trash className="inline size-4 text-red-500" />
-              </Button>
-            </TooltipTrigger>
-          </Tooltip>
-          <Tooltip>
-            <TooltipContent>New chat</TooltipContent>
-            <TooltipTrigger asChild>
-              <Button onClick={() => handleNewChat(router)} size="icon">
-                <PlusIcon className="inline size-4" />
-              </Button>
-            </TooltipTrigger>
-          </Tooltip>
+    <div className="w-full">
+        {/* Main Header Row */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" onClick={onNewChat} aria-label="New Chat">
+                    <PlusCircle className="h-5 w-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>New Chat</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            {isEditing ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  handleTitleSubmit()
+                }}
+                className="flex items-center"
+              >
+                <Input
+                  value={chatTitle}
+                  onChange={handleTitleChange}
+                  className="h-9 w-[200px]"
+                  autoFocus
+                  onBlur={handleTitleSubmit}
+                />
+              </form>
+            ) : (
+              <motion.h1
+                className="text-lg font-medium truncate max-w-[200px] sm:max-w-xs cursor-pointer hover:underline"
+                onClick={() => setIsEditing(true)}
+                title={chatTitle}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                {chatTitle}
+              </motion.h1>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+              className="flex items-center gap-1 h-8 px-2"
+            >
+              {isSettingsOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            </Button>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" onClick={onDeleteChat} aria-label="Delete Chat">
+                    <Trash2 className="h-5 w-5 text-destructive" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Delete Chat</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
-      </div>
-      <AnimatePresence>
-        {isSettingsOpen && (
-          <motion.div
+
+        {/* Settings Panel */}
+        <AnimatePresence>
+          {isSettingsOpen && (
+            <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -109,6 +126,7 @@ export function ChatHeader() {
               className="overflow-hidden"
             >
               <div className="flex flex-wrap justify-center gap-3 py-2 mt-1">
+                <TooltipProvider>
                   {/* Model Setting */}
                   <Tooltip>
                     <Popover>
@@ -131,7 +149,7 @@ export function ChatHeader() {
                         </TooltipTrigger>
                       </PopoverTrigger>
                       <TooltipContent side="bottom">
-                        <p>Model: {getLabel(modelOptions, settings.model)}</p>
+                        <p>Model: {getSettingLabel(modelOptions, settings.model)}</p>
                       </TooltipContent>
                       <PopoverContent className="w-[200px] p-0" align="center">
                         <div className="p-2 font-medium border-b">Select Model</div>
@@ -175,7 +193,7 @@ export function ChatHeader() {
                         </TooltipTrigger>
                       </PopoverTrigger>
                       <TooltipContent side="bottom">
-                        <p>Persona: {getLabel(personaOptions, settings.persona)}</p>
+                        <p>Persona: {getSettingLabel(personaOptions, settings.persona)}</p>
                       </TooltipContent>
                       <PopoverContent className="w-[200px] p-0" align="center">
                         <div className="p-2 font-medium border-b">Select Persona</div>
@@ -251,7 +269,7 @@ export function ChatHeader() {
                         </TooltipTrigger>
                       </PopoverTrigger>
                       <TooltipContent side="bottom">
-                        <p>Length: {getLabel(responseLengthOptions, settings.responseLength)}</p>
+                        <p>Length: {getSettingLabel(responseLengthOptions, settings.responseLength)}</p>
                       </TooltipContent>
                       <PopoverContent className="w-[200px] p-0" align="center">
                         <div className="p-2 font-medium border-b">Response Length</div>
@@ -275,10 +293,11 @@ export function ChatHeader() {
                       </PopoverContent>
                     </Popover>
                   </Tooltip>
+                </TooltipProvider>
               </div>
             </motion.div>
-        )}
-      </AnimatePresence>
-    </CardHeader>
+          )}
+        </AnimatePresence>
+    </div>
   )
 }

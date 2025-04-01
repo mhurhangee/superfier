@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { toast } from 'sonner'
 import { Card } from '@/components/ui/card'
@@ -11,6 +12,7 @@ import { useState } from 'react'
 import { ConfirmationModal, ConfirmationState } from './confirmation-modal'
 import { handleConfirmAction } from '@/lib/chat'
 import { Message } from 'ai'
+import { useChatSettings } from '@/components/providers/chat-settings'
 
 interface ChatContainerProps {
   id: string
@@ -18,13 +20,21 @@ interface ChatContainerProps {
 }
 
 export function ChatContainer({ id, initialMessages }: ChatContainerProps) {
+  const { getAIOptions } = useChatSettings()
   const { messages, input, setInput, append, status, setMessages, reload } = useChat({
     id: id,
     initialMessages,
+    body: {
+      test: 'test1',
+      ...getAIOptions(),
+    },
     sendExtraMessageFields: true,
     experimental_throttle: 50,
     onError: () => {
       toast.error('An error occured, please try again!')
+    },
+    onFinish: () => {
+      console.log('messages',messages)
     },
   })
 

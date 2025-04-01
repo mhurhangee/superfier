@@ -4,7 +4,6 @@ import {
   SidebarGroupContent,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarMenuAction,
 } from '@/components/ui/sidebar'
 import {
   DropdownMenu,
@@ -31,8 +30,8 @@ export function ChatGroup({ chats, label }: { chats: Chat[]; label: string }) {
         <span>{label}</span>
       </SidebarGroupLabel>
       <SidebarGroupContent>
-        {chats.map((chat: Chat, index: number) => {
-          const isActive = pathname === `/~/chat/${chat.id}`;
+        {chats.map((chat: Chat) => {
+          const isActive = pathname === `/~/chat/${chat.id}`
           return (
             <SidebarMenuItem key={chat.id} className="flex justify-between items-center group">
               <SidebarMenuButton asChild isActive={isActive}>
@@ -43,9 +42,9 @@ export function ChatGroup({ chats, label }: { chats: Chat[]; label: string }) {
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     className={`transition-opacity duration-300 ${isActive ? 'opacity-100' : 'md:opacity-0 group-hover:opacity-100 data-[state=open]:opacity-100'}`}
                   >
                     <MoreVertical className="h-4 w-4" />
@@ -58,7 +57,7 @@ export function ChatGroup({ chats, label }: { chats: Chat[]; label: string }) {
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>
-          );
+          )
         })}
       </SidebarGroupContent>
     </SidebarGroup>

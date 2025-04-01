@@ -1,13 +1,17 @@
-import { openai } from '@ai-sdk/openai'
 import { streamText, appendResponseMessages } from 'ai'
 import { prisma } from '@/lib/prisma'
 import { JsonValue } from '@prisma/client/runtime/library'
 import { auth } from '@clerk/nextjs/server'
+import { modelSelector } from '@/lib/model-selector'
 
 export const maxDuration = 60
 
 export async function POST(req: Request) {
-  const { messages, id } = await req.json()
+  const { messages, id, model } = await req.json()
+
+  console.log('Selected model:', model)
+
+  const selectedModel = modelSelector(model)
 
   const { userId } = await auth()
 
@@ -17,7 +21,7 @@ export async function POST(req: Request) {
 
   const result = streamText({
     system: 'You are a helpful assistant. Respond to the user in Markdown format.',
-    model: openai('gpt-4o-mini'),
+    model: selectedModel,
     messages,
     async onFinish({ response }) {
       await prisma.chat.upsert({
