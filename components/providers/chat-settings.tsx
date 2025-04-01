@@ -145,7 +145,7 @@ export const creativityOptions = [
   },
   {
     value: 'mid',
-    label: 'Balanced',
+    label: 'Mixed',
     description: 'Blend of accuracy and creativity',
     icon: <Scale className="h-4 w-4" />,
   },
