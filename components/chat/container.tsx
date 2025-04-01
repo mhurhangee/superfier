@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { toast } from 'sonner'
 import { Card } from '@/components/ui/card'
@@ -8,33 +7,41 @@ import { MessageInput } from './input'
 import { ChatHeader } from './header'
 import { MessageArea } from './message-area'
 import { useScrollToLatestMessage } from '@/hooks/useScrollToLatestMessage'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ConfirmationModal, ConfirmationState } from './confirmation-modal'
 import { handleConfirmAction } from '@/lib/chat'
 import { Message } from 'ai'
-import { useChatSettings } from '@/components/providers/chat-settings'
+import { useChatSettings, ChatSettings } from '@/components/providers/chat-settings'
 
 interface ChatContainerProps {
   id: string
   initialMessages: Message[]
+  initialSettings: ChatSettings
 }
 
-export function ChatContainer({ id, initialMessages }: ChatContainerProps) {
-  const { getAIOptions } = useChatSettings()
+export function ChatContainer({ id, initialMessages, initialSettings }: ChatContainerProps) {
+  const { getAIOptions, updateSettings } = useChatSettings()
+
+  useEffect(() => {
+    if (!initialSettings) return
+    console.log('Initial settings container:', initialSettings)
+    updateSettings('model', initialSettings.model)
+    updateSettings('persona', initialSettings.persona)
+    updateSettings('creativity', initialSettings.creativity)
+    updateSettings('responseLength', initialSettings.responseLength)
+    console.log('AI options container:', getAIOptions())
+  }, [initialSettings, updateSettings, getAIOptions])
+
   const { messages, input, setInput, append, status, setMessages, reload } = useChat({
     id: id,
     initialMessages,
     body: {
-      test: 'test1',
       ...getAIOptions(),
     },
     sendExtraMessageFields: true,
     experimental_throttle: 50,
     onError: () => {
       toast.error('An error occured, please try again!')
-    },
-    onFinish: () => {
-      console.log('messages',messages)
     },
   })
 

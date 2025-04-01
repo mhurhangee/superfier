@@ -1,32 +1,34 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { ChevronDown, ChevronUp, PlusCircle, Settings, Trash2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronUp, PlusCircle, Settings, Trash2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import {
   useChatSettings,
   modelOptions,
   personaOptions,
   responseLengthOptions,
   creativityOptions,
-} from "@/components/providers/chat-settings"
-import { handleNewChat } from "@/lib/handle-new-chat"
-import { handleDeleteChat } from "@/lib/handle-delete-chat"
-import { useRouter, usePathname } from "next/navigation"
+} from '@/components/providers/chat-settings'
+import { handleNewChat } from '@/lib/handle-new-chat'
+import { handleDeleteChat } from '@/lib/handle-delete-chat'
+import { useRouter, usePathname } from 'next/navigation'
 
 interface ChatHeaderProps {
   title?: string
   onTitleChange?: (title: string) => void
 }
 
-export function ChatHeader({
-  title = "New Chat",
-  onTitleChange = () => { },
-}: ChatHeaderProps) {
+export function ChatHeader({ title = 'New Chat', onTitleChange = () => {} }: ChatHeaderProps) {
   const [isEditing, setIsEditing] = React.useState(false)
   const [chatTitle, setChatTitle] = React.useState(title)
   const router = useRouter()
@@ -88,15 +90,24 @@ export function ChatHeader({
                 onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                 className="flex items-center gap-1 h-8 px-2"
               >
-                {isSettingsOpen ? <ChevronUp className="h-4 w-4" /> : <Settings className="h-4 w-4" />}
+                {isSettingsOpen ? (
+                  <ChevronUp className="h-4 w-4" />
+                ) : (
+                  <Settings className="h-4 w-4" />
+                )}
               </Button>
             </TooltipTrigger>
-            <TooltipContent>{isSettingsOpen ? "Hide settings" : "Show settings"}</TooltipContent>
+            <TooltipContent>{isSettingsOpen ? 'Hide settings' : 'Show settings'}</TooltipContent>
           </Tooltip>
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={() => handleDeleteChat(chatId, router)} aria-label="Delete Chat">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleDeleteChat(chatId, router)}
+                aria-label="Delete Chat"
+              >
                 <Trash2 className="h-5 w-5 text-destructive" />
               </Button>
             </TooltipTrigger>
@@ -105,13 +116,17 @@ export function ChatHeader({
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={() => handleNewChat(router)} aria-label="New Chat">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleNewChat(router)}
+                aria-label="New Chat"
+              >
                 <PlusCircle className="h-5 w-5" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>New Chat</TooltipContent>
           </Tooltip>
-
         </div>
       </div>
 
@@ -120,7 +135,7 @@ export function ChatHeader({
         {isSettingsOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
+            animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
@@ -132,9 +147,10 @@ export function ChatHeader({
                   <TooltipTrigger asChild>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="h-9 gap-2 px-3">
-                        {modelOptions.find(option => option.value === settings.model)?.icon}
+                        {modelOptions.find((option) => option.value === settings.model)?.icon}
                         <span className="font-normal">
-                          {modelOptions.find(option => option.value === settings.model)?.label || settings.model}
+                          {modelOptions.find((option) => option.value === settings.model)?.label ||
+                            settings.model}
                         </span>
                       </Button>
                     </DropdownMenuTrigger>
@@ -142,10 +158,15 @@ export function ChatHeader({
                   <TooltipContent>AI Model</TooltipContent>
                   <DropdownMenuContent align="start">
                     {modelOptions.map((option) => (
-                      <DropdownMenuItem key={option.value} onSelect={() => updateSettings("model", option.value)}>
+                      <DropdownMenuItem
+                        key={option.value}
+                        onSelect={() => updateSettings('model', option.value)}
+                      >
                         {option.icon}
                         {option.label}
-                        <span className="inline-block text-xs text-muted-foreground">{option.description}</span>
+                        <span className="inline-block text-xs text-muted-foreground">
+                          {option.description}
+                        </span>
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>
@@ -158,9 +179,10 @@ export function ChatHeader({
                   <TooltipTrigger asChild>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="h-9 gap-2 px-3">
-                        {personaOptions.find(option => option.value === settings.persona)?.icon}
+                        {personaOptions.find((option) => option.value === settings.persona)?.icon}
                         <span className="font-normal">
-                          {personaOptions.find(option => option.value === settings.persona)?.label || settings.persona}
+                          {personaOptions.find((option) => option.value === settings.persona)
+                            ?.label || settings.persona}
                         </span>
                       </Button>
                     </DropdownMenuTrigger>
@@ -168,7 +190,10 @@ export function ChatHeader({
                   <TooltipContent>Persona</TooltipContent>
                   <DropdownMenuContent align="start">
                     {personaOptions.map((option) => (
-                      <DropdownMenuItem key={option.value} onSelect={() => updateSettings("persona", option.value)}>
+                      <DropdownMenuItem
+                        key={option.value}
+                        onSelect={() => updateSettings('persona', option.value)}
+                      >
                         {option.icon}
                         {option.label}
                       </DropdownMenuItem>
@@ -183,9 +208,13 @@ export function ChatHeader({
                   <TooltipTrigger asChild>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="h-9 gap-2 px-3">
-                        {creativityOptions.find(option => option.value === settings.creativity)?.icon}
+                        {
+                          creativityOptions.find((option) => option.value === settings.creativity)
+                            ?.icon
+                        }
                         <span className="font-normal">
-                          {creativityOptions.find(option => option.value === settings.creativity)?.label || settings.creativity}
+                          {creativityOptions.find((option) => option.value === settings.creativity)
+                            ?.label || settings.creativity}
                         </span>
                       </Button>
                     </DropdownMenuTrigger>
@@ -193,7 +222,10 @@ export function ChatHeader({
                   <TooltipContent>Creativity</TooltipContent>
                   <DropdownMenuContent align="start">
                     {creativityOptions.map((option) => (
-                      <DropdownMenuItem key={option.value} onSelect={() => updateSettings("creativity", option.value)}>
+                      <DropdownMenuItem
+                        key={option.value}
+                        onSelect={() => updateSettings('creativity', option.value)}
+                      >
                         {option.icon}
                         {option.label}
                       </DropdownMenuItem>
@@ -208,9 +240,15 @@ export function ChatHeader({
                   <TooltipTrigger asChild>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="h-9 gap-2 px-3">
-                        {responseLengthOptions.find(option => option.value === settings.responseLength)?.icon}
+                        {
+                          responseLengthOptions.find(
+                            (option) => option.value === settings.responseLength
+                          )?.icon
+                        }
                         <span className="font-normal">
-                          {responseLengthOptions.find(option => option.value === settings.responseLength)?.label || settings.responseLength}
+                          {responseLengthOptions.find(
+                            (option) => option.value === settings.responseLength
+                          )?.label || settings.responseLength}
                         </span>
                       </Button>
                     </DropdownMenuTrigger>
@@ -218,7 +256,10 @@ export function ChatHeader({
                   <TooltipContent>Response Length</TooltipContent>
                   <DropdownMenuContent align="start">
                     {responseLengthOptions.map((option) => (
-                      <DropdownMenuItem key={option.value} onSelect={() => updateSettings("responseLength", option.value)}>
+                      <DropdownMenuItem
+                        key={option.value}
+                        onSelect={() => updateSettings('responseLength', option.value)}
+                      >
                         {option.icon}
                         {option.label}
                       </DropdownMenuItem>

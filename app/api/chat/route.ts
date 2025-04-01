@@ -10,7 +10,11 @@ export const maxDuration = 60
 export async function POST(req: Request) {
   const { messages, id, model, persona, creativity, responseLength } = await req.json()
 
-  const { selectedModel, selectedTemperature, selectedMaxTokens } = modelSelector(model, creativity, responseLength)
+  const { selectedModel, selectedTemperature, selectedMaxTokens } = modelSelector(
+    model,
+    creativity,
+    responseLength
+  )
 
   const builtSystemPrompt = promptBuilder(persona, creativity, responseLength)
 
@@ -44,12 +48,24 @@ export async function POST(req: Request) {
             messages,
             responseMessages: response.messages,
           }) as unknown as JsonValue[],
+          settings: {
+            model,
+            persona,
+            creativity,
+            responseLength,
+          } as unknown as JsonValue,
         },
         update: {
           messages: appendResponseMessages({
             messages,
             responseMessages: response.messages,
           }) as unknown as JsonValue[],
+          settings: {
+            model,
+            persona,
+            creativity,
+            responseLength,
+          } as unknown as JsonValue,
         },
       })
     },

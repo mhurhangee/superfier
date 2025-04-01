@@ -9,9 +9,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
       <SidebarProvider>
         <TooltipProvider>
-          <ChatSettingsProvider>
-            {children}
-          </ChatSettingsProvider>
+          <ChatSettingsProvider>{children}</ChatSettingsProvider>
           <Toaster richColors />
         </TooltipProvider>
       </SidebarProvider>

@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 import { auth } from '@clerk/nextjs/server'
 import { Message } from 'ai'
 import { redirect } from 'next/navigation'
-
+import { ChatSettings } from '@/components/providers/chat-settings'
 export default async function ChatPage({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id
   const { userId } = await auth()
@@ -26,10 +26,16 @@ export default async function ChatPage({ params }: { params: Promise<{ id: strin
   }
 
   const loadedMessages = loadedChat?.messages as unknown as Message[]
+  const loadedSettings = loadedChat?.settings as unknown as ChatSettings
 
   return (
     <Suspense fallback={<Loader2 className="size-8 animate-spin" />}>
-      <ChatContainer id={id} initialMessages={loadedMessages || []} />
+      <ChatContainer
+        id={id}
+        initialMessages={loadedMessages || []}
+        initialSettings={loadedSettings}
+      />
+      sa
     </Suspense>
   )
 }
