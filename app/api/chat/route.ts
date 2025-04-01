@@ -3,15 +3,21 @@ import { prisma } from '@/lib/prisma'
 import { JsonValue } from '@prisma/client/runtime/library'
 import { auth } from '@clerk/nextjs/server'
 import { modelSelector } from '@/lib/model-selector'
+import { promptBuilder } from '@/lib/prompt-builder'
 
 export const maxDuration = 60
 
 export async function POST(req: Request) {
-  const { messages, id, model } = await req.json()
+  const { messages, id, model, persona, creativity, responseLength } = await req.json()
 
-  console.log('Selected model:', model)
+  const { selectedModel, selectedTemperature, selectedMaxTokens } = modelSelector(model, creativity, responseLength)
 
-  const selectedModel = modelSelector(model)
+  const builtSystemPrompt = promptBuilder(persona, creativity, responseLength)
+
+  console.log('Selected model:', selectedModel)
+  console.log('Selected temperature:', selectedTemperature)
+  console.log('Selected max tokens:', selectedMaxTokens)
+  console.log('Built system prompt:', builtSystemPrompt)
 
   const { userId } = await auth()
 
@@ -20,8 +26,10 @@ export async function POST(req: Request) {
   }
 
   const result = streamText({
-    system: 'You are a helpful assistant. Respond to the user in Markdown format.',
+    system: builtSystemPrompt,
     model: selectedModel,
+    temperature: selectedTemperature,
+    maxTokens: selectedMaxTokens,
     messages,
     async onFinish({ response }) {
       await prisma.chat.upsert({

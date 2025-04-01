@@ -51,19 +51,21 @@ export function ChatContainer({ id, initialMessages }: ChatContainerProps) {
 
   return (
     <div className="w-full max-w-4xl mx-auto h-full flex justify-center">
-      <Card className="w-full min-w-xs sm:min-w-sm md:min-w-md lg:min-w-2xl xl:min-w-4xl mx-auto h-full flex flex-col border-0 bg-background">
+      <Card className="w-full min-w-xs sm:min-w-sm md:min-w-md lg:min-w-2xl xl:min-w-4xl mx-auto h-screen flex flex-col border-0 bg-background overflow-hidden">
         <ChatHeader />
-        <MessageArea
-          messages={messages}
-          status={status}
-          setConfirmationState={setConfirmationState}
-          editingMessageIndex={editingMessageIndex}
-          editingMessageContent={editingMessageContent}
-          setEditingMessageContent={setEditingMessageContent}
-          setEditingMessageIndex={setEditingMessageIndex}
-          setMessages={setMessages}
-          reload={reload}
-        />
+        <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
+          <MessageArea
+            messages={messages}
+            status={status}
+            setConfirmationState={setConfirmationState}
+            editingMessageIndex={editingMessageIndex}
+            editingMessageContent={editingMessageContent}
+            setEditingMessageContent={setEditingMessageContent}
+            setEditingMessageIndex={setEditingMessageIndex}
+            setMessages={setMessages}
+            reload={reload}
+          />
+        </div>
         <MessageInput input={input} setInput={setInput} append={append} status={status} />
       </Card>
       <ConfirmationModal

@@ -32,7 +32,7 @@ export function MessageArea({
   const lastAssistantMessageIndex = messages.findLastIndex((m) => m.role === 'assistant')
   return (
     <CardContent className="flex-1 p-0 pt-6 overflow-hidden">
-      <ScrollArea className="h-full px-6 max-h-[calc(100vh-250px)] scroll-smooth">
+      <ScrollArea className="h-full px-6 scroll-smooth">
         <div className="space-y-4 pb-2">
           {messages.length === 0 ? (
             <EmptyState />
