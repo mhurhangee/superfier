@@ -10,7 +10,7 @@ export const maxDuration = 60
 
 export async function POST(req: Request) {
   const { messages, id, model, persona, creativity, responseLength } = await req.json()
-  
+
   const { selectedModel, selectedTemperature, selectedMaxTokens } = modelSelector(
     model,
     creativity,
@@ -18,7 +18,6 @@ export async function POST(req: Request) {
   )
 
   const builtSystemPrompt = promptBuilder(persona, creativity, responseLength)
-
 
   const { userId } = await auth()
 
@@ -32,13 +31,14 @@ export async function POST(req: Request) {
     temperature: selectedTemperature,
     maxTokens: selectedMaxTokens,
     messages,
-    providerOptions: model === "claude" 
-    ? { 
-      anthropic: {
-        thinking: { type: 'enabled', budgetTokens: 12000 },
-      } satisfies AnthropicProviderOptions,
-    }
-    : {},
+    providerOptions:
+      model === 'claude'
+        ? {
+            anthropic: {
+              thinking: { type: 'enabled', budgetTokens: 12000 },
+            } satisfies AnthropicProviderOptions,
+          }
+        : {},
     async onFinish({ response }) {
       await prisma.chat.upsert({
         where: {
@@ -76,6 +76,6 @@ export async function POST(req: Request) {
   })
 
   return result.toDataStreamResponse({
-    sendReasoning: true
+    sendReasoning: true,
   })
 }
