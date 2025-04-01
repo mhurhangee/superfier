@@ -1,5 +1,6 @@
 "use client"
 
+import { Rabbit, Turtle } from "lucide-react"
 import * as React from "react"
 import { createContext, useContext, useState } from "react"
 
@@ -12,8 +13,8 @@ export interface ChatSettings {
 }
 
 export const modelOptions = [
-  { value: "gpt-4o-mini", label: "Fast" },
-  { value: "gpt-4o", label: "Slow" },
+  { value: "gpt-4o-mini", label: "Speed", description: "Faster responses, less quality", icon: <Rabbit className="h-4 w-4" /> },
+  { value: "gpt-4o", label: "Quality", description: "Slower responses, better quality", icon: <Turtle className="h-4 w-4" /> },
 ]
 
 export type Model = 'gpt-4o' | 'gpt-4o-mini'
@@ -42,8 +43,11 @@ export const defaultSettings: ChatSettings = {
 }
 
 // Helper function to get label for a value
-export const getSettingLabel = (options: { value: string; label: string }[], value: string) => {
-  return options.find((option) => option.value === value)?.label || value
+export const getSettingLabel = (options: { value: string; label: string; icon: React.ReactNode }[], value: string) => {
+  const option = options.find((option) => option.value === value);
+  let icon = option?.icon || null;
+  let label = option?.label || value;
+  return icon + label;
 }
 
 // Create context type

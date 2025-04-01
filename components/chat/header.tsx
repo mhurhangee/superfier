@@ -2,13 +2,14 @@
 
 import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { PlusCircle, Trash2, Cpu, UserCircle, Sparkles, AlignJustify, ChevronUp, ChevronDown } from "lucide-react"
+import { PlusCircle, Trash2, UserCircle, Sparkles, AlignJustify, ChevronUp, ChevronDown, Globe } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 import { Input } from "@/components/ui/input"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import {
   useChatSettings,
   modelOptions,
@@ -126,49 +127,30 @@ export function ChatHeader({
               className="overflow-hidden"
             >
               <div className="flex flex-wrap justify-center gap-3 py-2 mt-1">
-                <TooltipProvider>
                   {/* Model Setting */}
                   <Tooltip>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <TooltipTrigger asChild>
-                          <Button variant="outline" size="sm" className="h-9 gap-2 px-3">
-                            <Cpu className="h-4 w-4" />
-                            <span className="font-normal">
-                              {settings.model === "gpt-4o"
-                                ? "GPT-4o"
-                                : settings.model === "gpt-4-turbo"
-                                  ? "GPT-4 Turbo"
-                                  : settings.model === "gpt-3.5-turbo"
-                                    ? "GPT-3.5"
-                                    : settings.model.includes("claude")
-                                      ? "Claude"
-                                      : "AI"}
-                            </span>
-                          </Button>
-                        </TooltipTrigger>
-                      </PopoverTrigger>
-                      <TooltipContent side="bottom">
-                        <p>Model: {getSettingLabel(modelOptions, settings.model)}</p>
-                      </TooltipContent>
-                      <PopoverContent className="w-[200px] p-0" align="center">
-                        <div className="p-2 font-medium border-b">Select Model</div>
-                        <div className="p-2">
-                          <Select value={settings.model} onValueChange={(value) => updateSettings("model", value)}>
-                            <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Select model" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {modelOptions.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
+                    <DropdownMenu>
+                      <TooltipTrigger asChild> 
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="sm" className="h-9 gap-2 px-3">
+                          {modelOptions.find(option => option.value === settings.model)?.icon}
+                          <span className="font-normal">
+                            {modelOptions.find(option => option.value === settings.model)?.label || settings.model}
+                          </span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      </TooltipTrigger>
+                      <TooltipContent>Chat odel</TooltipContent>
+                      <DropdownMenuContent align="start">
+                        {modelOptions.map((option) => (
+                          <DropdownMenuItem key={option.value} onSelect={() => updateSettings("model", option.value)}>
+                            {option.icon}
+                            {option.label}
+                            <span className="inline-block text-xs text-muted-foreground">{option.description}</span>
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </Tooltip>
 
                   {/* Persona Setting */}
@@ -193,7 +175,7 @@ export function ChatHeader({
                         </TooltipTrigger>
                       </PopoverTrigger>
                       <TooltipContent side="bottom">
-                        <p>Persona: {getSettingLabel(personaOptions, settings.persona)}</p>
+                        <p>Persona: </p>
                       </TooltipContent>
                       <PopoverContent className="w-[200px] p-0" align="center">
                         <div className="p-2 font-medium border-b">Select Persona</div>
@@ -269,7 +251,7 @@ export function ChatHeader({
                         </TooltipTrigger>
                       </PopoverTrigger>
                       <TooltipContent side="bottom">
-                        <p>Length: {getSettingLabel(responseLengthOptions, settings.responseLength)}</p>
+                        <p>Length: </p>
                       </TooltipContent>
                       <PopoverContent className="w-[200px] p-0" align="center">
                         <div className="p-2 font-medium border-b">Response Length</div>
@@ -293,7 +275,6 @@ export function ChatHeader({
                       </PopoverContent>
                     </Popover>
                   </Tooltip>
-                </TooltipProvider>
               </div>
             </motion.div>
           )}
