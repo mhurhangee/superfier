@@ -15,4 +15,5 @@ model Chat {
   updatedAt DateTime @updatedAt
   userId String // from clerk
   settings Json? // Settings for the chat
+  contextTokens Int? // Number of tokens used for context
 }
