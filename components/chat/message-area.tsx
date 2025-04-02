@@ -29,18 +29,16 @@ export function MessageArea({
   setMessages,
   reload,
 }: MessageAreaProps) {
-  const lastAssistantMessageIndex = messages.findLastIndex((m) => m.role === 'assistant')
   return (
-    <CardContent className="flex-1 p-0 pt-6 overflow-hidden">
-      <ScrollArea className="h-full px-6 scroll-smooth">
-        <div className="space-y-4 pb-2">
+    <CardContent className="flex-1 p-0 overflow-hidden">
+      <ScrollArea className="h-full scroll-smooth">
+        <div className="space-y-4">
           {messages.length === 0 ? (
             <EmptyState />
           ) : (
             <MessageList
               messages={messages}
               status={status}
-              lastAssistantMessageIndex={lastAssistantMessageIndex}
               setConfirmationState={setConfirmationState}
               editingMessageIndex={editingMessageIndex}
               editingMessageContent={editingMessageContent}
@@ -50,7 +48,6 @@ export function MessageArea({
               reload={reload}
             />
           )}
-
           <ChatError status={status} />
         </div>
       </ScrollArea>

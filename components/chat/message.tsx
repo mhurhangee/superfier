@@ -14,7 +14,7 @@ interface ChatMessageProps {
   message: Message & { parts?: Array<{ type: string } & Record<string, unknown>> }
   index: number
   status: string
-  lastAssistantMessageIndex: number
+  lastMessage: boolean
   setConfirmationState: SetConfirmationState
 }
 
@@ -22,7 +22,7 @@ export function ChatMessage({
   message,
   index,
   status,
-  lastAssistantMessageIndex,
+  lastMessage,
   setConfirmationState,
 }: ChatMessageProps) {
   const isUser = message.role === 'user'
@@ -30,11 +30,11 @@ export function ChatMessage({
 
   // Check if the message has parts
   const hasParts = message.parts && message.parts.length > 0
-  const isStreaming = status === 'streaming' && lastAssistantMessageIndex === index
+  const isStreaming = status === 'streaming' && lastMessage
 
   return (
     <div
-      className={`flex flex-col gap-1 py-2 ${lastAssistantMessageIndex === index ? 'min-h-[calc(100vh-300px)]' : ''}`}
+      className={`flex flex-col gap-1 py-2 ${lastMessage && status !== 'error' ? 'min-h-[calc(100vh-275px)]' : ''}`}
       key={index}
       data-message-role={message.role}
       data-message-index={index}
@@ -102,7 +102,7 @@ export function ChatMessage({
       </div>
       <Streaming
         status={status}
-        lastAssistantMessageIndex={lastAssistantMessageIndex}
+        lastMessage={lastMessage}
         index={index}
       />
     </div>
