@@ -39,7 +39,7 @@ export async function POST(req: Request) {
             } satisfies AnthropicProviderOptions,
           }
         : {},
-    async onFinish({ response }) {
+    async onFinish({ response, usage }) {
       await prisma.chat.upsert({
         where: {
           id: id,
@@ -58,6 +58,7 @@ export async function POST(req: Request) {
             creativity,
             responseLength,
           },
+          contextTokens: usage?.totalTokens ?? 0,
         },
         update: {
           messages: appendResponseMessages({
@@ -70,6 +71,7 @@ export async function POST(req: Request) {
             creativity,
             responseLength,
           },
+          contextTokens: usage?.totalTokens ?? 0,
         },
       })
     },
