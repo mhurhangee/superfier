@@ -26,6 +26,7 @@ MIT License
 - [x] ~~Reasoning support~~
 - [x] ~~Change response style~~
 - [x] ~~Change assistants~~
+- [ ] Stop streaming, better error support
 - [ ] Better titles
 - [ ] Memory management (think hard cap is likely best approach)
 - [ ] Clickable examples, context-aware examples

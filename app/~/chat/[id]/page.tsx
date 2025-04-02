@@ -27,6 +27,7 @@ export default async function ChatPage({ params }: { params: Promise<{ id: strin
 
   const loadedMessages = loadedChat?.messages as unknown as Message[]
   const loadedSettings = loadedChat?.settings as unknown as ChatSettings
+  const loadedContextTokens = loadedChat?.contextTokens as unknown as number
 
   return (
     <Suspense fallback={
@@ -38,6 +39,7 @@ export default async function ChatPage({ params }: { params: Promise<{ id: strin
         id={id}
         initialMessages={loadedMessages || []}
         initialSettings={loadedSettings}
+        initialContextTokens={loadedContextTokens || 0}
       />
     </Suspense>
   )

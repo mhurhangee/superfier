@@ -12,16 +12,20 @@ import { ConfirmationModal, ConfirmationState } from './confirmation-modal'
 import { handleConfirmAction } from '@/lib/chat'
 import { Message } from 'ai'
 import { useChatSettings, ChatSettings } from '@/components/providers/chat-settings'
+import { MAX_CONTEXT_TOKENS } from '@/lib/constants'
+import { LanguageModelUsage} from 'ai'
 
 interface ChatContainerProps {
   id: string
   initialMessages: Message[]
   initialSettings: ChatSettings
+  initialContextTokens?: number
 }
 
-export function ChatContainer({ id, initialMessages, initialSettings }: ChatContainerProps) {
+export function ChatContainer({ id, initialMessages, initialSettings, initialContextTokens }: ChatContainerProps) {
   const { getAIOptions, updateSettings } = useChatSettings()
   const initializedRef = useRef(false)
+  const [tokenUsage, setTokenUsage] = useState(initialContextTokens || 0)
 
   useEffect(() => {
     if (!initialSettings || initializedRef.current) return
@@ -43,10 +47,30 @@ export function ChatContainer({ id, initialMessages, initialSettings }: ChatCont
     experimental_throttle: 50,
     onError: (error: Error) => {
       if (error.message.includes('Token limit exceeded') || error.message.includes('token limit')) {
-        toast.error('Token limit exceeded. Try shortening your message or starting a new chat.')
+        toast.error('Memory limit exceeded. Start a new chat.')
       } else {
         console.error(error)
         toast.error('An error occurred, please try again!')
+      }
+    },
+    onFinish: (message: Message, options: { usage: LanguageModelUsage }) => {
+      //TODO some sort of safeguarding, send to e.g. moderation API
+      console.log(message)
+      // Update token usage display when we get usage data
+      if (options.usage) {
+        setTokenUsage(options.usage.totalTokens)
+      }
+      if (options.usage?.totalTokens > MAX_CONTEXT_TOKENS) {
+        toast.error('Memory limit exceeded. Start a new chat.')
+      }
+      if (options.usage?.totalTokens > MAX_CONTEXT_TOKENS * 0.90) {
+        toast.warning('Very close to memory limit. Start a new chat.')
+      }
+      if (options.usage?.totalTokens > MAX_CONTEXT_TOKENS * 0.80) {
+        toast.warning('Close to memory limit. Start a new chat.')
+      }
+      if (options.usage?.totalTokens > MAX_CONTEXT_TOKENS * 0.70) {
+        toast.info('Approaching memory limit. Start a new chat soon.')
       }
     },
   })
@@ -65,7 +89,7 @@ export function ChatContainer({ id, initialMessages, initialSettings }: ChatCont
   return (
     <div className="w-full max-w-4xl mx-auto h-full flex justify-center">
       <Card className="w-full min-w-xs sm:min-w-sm md:min-w-md lg:min-w-2xl xl:min-w-4xl mx-auto h-screen flex flex-col border-0 bg-background overflow-hidden">
-        <ChatHeader />
+        <ChatHeader tokenUsage={tokenUsage} />
         <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
           <MessageArea
             messages={messages}

@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronUp, PlusCircle, Settings, Trash2 } from 'lucide-react'
+import { ChevronUp, PlusCircle, Settings, Trash2, Database } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
@@ -22,13 +22,15 @@ import {
 import { handleNewChat } from '@/lib/handle-new-chat'
 import { handleDeleteChat } from '@/lib/handle-delete-chat'
 import { useRouter, usePathname } from 'next/navigation'
+import { MAX_CONTEXT_TOKENS } from '@/lib/constants'
 
 interface ChatHeaderProps {
   title?: string
   onTitleChange?: (title: string) => void
+  tokenUsage?: number
 }
 
-export function ChatHeader({ title = 'New Chat', onTitleChange = () => {} }: ChatHeaderProps) {
+export function ChatHeader({ title = 'New Chat', onTitleChange = () => { }, tokenUsage = 0 }: ChatHeaderProps) {
   const [isEditing, setIsEditing] = React.useState(false)
   const [chatTitle, setChatTitle] = React.useState(title)
   const router = useRouter()
@@ -233,7 +235,6 @@ export function ChatHeader({ title = 'New Chat', onTitleChange = () => {} }: Cha
                   </DropdownMenuContent>
                 </DropdownMenu>
               </Tooltip>
-
               {/* Response Length Setting */}
               <Tooltip>
                 <DropdownMenu>
@@ -266,6 +267,22 @@ export function ChatHeader({ title = 'New Chat', onTitleChange = () => {} }: Cha
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button size="sm" className={`h-9 gap-2 px-3 ${tokenUsage > MAX_CONTEXT_TOKENS * 0.85
+                    ? "bg-red-800"
+                    : tokenUsage > MAX_CONTEXT_TOKENS * 0.7 ? "bg-orange-700": tokenUsage > MAX_CONTEXT_TOKENS * 0.5
+                      ? "bg-yellow-800"
+                      : "bg-green-900"
+                    }`}>
+                    <Database className="h-5 w-5 inline-block" />
+                    <span className="font-normal">
+                    {((tokenUsage / MAX_CONTEXT_TOKENS) * 100).toFixed(0)}%
+                    </span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Memory Usage</TooltipContent>
               </Tooltip>
             </div>
           </motion.div>

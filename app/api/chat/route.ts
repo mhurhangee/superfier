@@ -5,6 +5,7 @@ import { auth } from '@clerk/nextjs/server'
 import { modelSelector } from '@/lib/model-selector'
 import { promptBuilder } from '@/lib/prompt-builder'
 import { AnthropicProviderOptions } from '@ai-sdk/anthropic'
+import { MAX_CONTEXT_TOKENS } from '@/lib/constants'
 
 export const maxDuration = 60
 
@@ -38,7 +39,7 @@ export async function POST(req: Request) {
   const currentTokenUsage = existingChat.contextTokens ?? 0
   console.log('Current token usage:', currentTokenUsage)
 
-  if (currentTokenUsage >= 1000) {
+  if (currentTokenUsage >= MAX_CONTEXT_TOKENS) {
     return new Response('Token limit exceeded', { status: 400 })
   }
 
