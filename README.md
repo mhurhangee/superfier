@@ -2,12 +2,6 @@
 
 AI chat application built with AI-SDK.
 
-## Features
-
-- Chat with AI-powered agents
-- Save and manage chat history
-- Responsive design for all devices
-- Customizable theme
 
 ## Tech Stack
 
@@ -21,21 +15,21 @@ AI chat application built with AI-SDK.
 
 MIT License
 
-# Roadmap
-
-- [x] Basic chat
-- [x] Memoized markdown
-- [x] Chat history
-- [x] Edit, regen, delete messages
-- [x] Delete current chat
-- [x] fix delete chat for mobile (bug with shadcn)
-- [x] Settings menu
-- [x] Change model
-- [x] Reasoning support
-- [x] Change response style
-- [x] Change assistants
-- [ ] Syntax highlighted
-- [ ] Clickable examples
+## Roadmap
+- [x] ~~Basic app structure, including auth and chat~~
+- [x] ~~Memoized markdown w/ syntax highlighting~~
+- [x] ~~Persist chat history~~
+- [x] ~~Edit, regen, delete messages~~
+- [x] ~~Delete current chat~~
+- [x] ~~Settings menu~~
+- [x] ~~Change model~~
+- [x] ~~Reasoning support~~
+- [x] ~~Change response style~~
+- [x] ~~Change assistants~~
+- [ ] Better titles
+- [ ] Memory management (think hard cap is likely best approach)
+- [ ] Clickable examples, context-aware examples
+- [ ] Multimodal inputs
 - [ ] Suggested next message
 - [ ] Web-assistance and sources
 - [ ] PDF support
