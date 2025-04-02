@@ -2,7 +2,6 @@ import { CardContent } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { EmptyState } from '@/components/chat/empty'
 import { MessageList } from '@/components/chat/message-list'
-import { ChatError } from '@/components/chat/error'
 import { Message } from '@ai-sdk/react'
 import { SetConfirmationState } from './confirmation-modal'
 
@@ -29,7 +28,7 @@ export function MessageArea({
   setEditingMessageIndex,
   setMessages,
   reload,
-  tooLong
+  tooLong,
 }: MessageAreaProps) {
   return (
     <CardContent className="flex-1 p-0 overflow-hidden">

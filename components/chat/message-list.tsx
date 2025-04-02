@@ -28,7 +28,7 @@ export function MessageList({
   setEditingMessageContent,
   setMessages,
   reload,
-  tooLong
+  tooLong,
 }: MessageListProps) {
   return (
     <div className="space-y-1">

@@ -2,7 +2,6 @@
 
 AI chat application built with AI-SDK.
 
-
 ## Tech Stack
 
 - Next.js (app router)
@@ -16,6 +15,7 @@ AI chat application built with AI-SDK.
 MIT License
 
 ## Roadmap
+
 - [x] ~~Basic app structure, including auth and chat~~
 - [x] ~~Memoized markdown w/ syntax highlighting~~
 - [x] ~~Persist chat history~~

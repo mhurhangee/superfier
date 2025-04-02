@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     return new Response('Unauthorized', { status: 401 })
   }
 
-    // Get the current chat if it exists to check token usage
+  // Get the current chat if it exists to check token usage
   const existingChat = await prisma.chat.findUnique({
     where: { id, userId },
     select: { contextTokens: true },

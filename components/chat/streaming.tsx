@@ -1,14 +1,6 @@
 import { Loader2 } from 'lucide-react'
 
-export function Streaming({
-  status,
-  lastMessage,
-  index,
-}: {
-  status: string
-  lastMessage: boolean
-  index: number
-}) {
+export function Streaming({ status, lastMessage }: { status: string; lastMessage: boolean }) {
   return (
     <>
       {lastMessage && status === 'streaming' && (

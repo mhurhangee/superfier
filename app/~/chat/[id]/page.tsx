@@ -30,11 +30,13 @@ export default async function ChatPage({ params }: { params: Promise<{ id: strin
   const loadedContextTokens = loadedChat?.contextTokens as unknown as number
 
   return (
-    <Suspense fallback={
-      <div className="flex h-full w-full items-center justify-center">
-        <Loader2 className="size-12 animate-spin" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex h-full w-full items-center justify-center">
+          <Loader2 className="size-12 animate-spin" />
+        </div>
+      }
+    >
       <ChatContainer
         id={id}
         initialMessages={loadedMessages || []}

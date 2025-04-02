@@ -37,7 +37,7 @@ export function MessageInput({ input, setInput, append, status, tooLong }: Messa
           onChange={(e) => setInput(e.target.value)}
           placeholder={'Type your message...'}
           className="w-full min-h-[80px] max-h-[160px] resize-none pr-14 bg-background/50 focus:bg-background"
-          disabled={status !== 'ready' && status !== 'error' || tooLong}
+          disabled={(status !== 'ready' && status !== 'error') || tooLong}
           autoFocus
           autoComplete="off"
           withCounter
