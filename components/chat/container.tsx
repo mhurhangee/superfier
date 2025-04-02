@@ -14,6 +14,7 @@ import { Message } from 'ai'
 import { useChatSettings, ChatSettings } from '@/components/providers/chat-settings'
 import { MAX_CONTEXT_TOKENS } from '@/lib/constants'
 import { LanguageModelUsage} from 'ai'
+import { ChatError } from './error'
 
 interface ChatContainerProps {
   id: string
@@ -26,6 +27,7 @@ export function ChatContainer({ id, initialMessages, initialSettings, initialCon
   const { getAIOptions, updateSettings } = useChatSettings()
   const initializedRef = useRef(false)
   const [tokenUsage, setTokenUsage] = useState(initialContextTokens || 0)
+  const [tooLong, setTooLong] = useState(false)
 
   useEffect(() => {
     if (!initialSettings || initializedRef.current) return
@@ -34,6 +36,9 @@ export function ChatContainer({ id, initialMessages, initialSettings, initialCon
     updateSettings('creativity', initialSettings.creativity)
     updateSettings('responseLength', initialSettings.responseLength)
     initializedRef.current = true
+    if (initialContextTokens && initialContextTokens > MAX_CONTEXT_TOKENS) {
+      setTooLong(true)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialSettings])
 
@@ -47,6 +52,7 @@ export function ChatContainer({ id, initialMessages, initialSettings, initialCon
     experimental_throttle: 50,
     onError: (error: Error) => {
       if (error.message.includes('Token limit exceeded') || error.message.includes('token limit')) {
+        setTooLong(true)
         toast.error('Memory limit exceeded. Start a new chat.')
       } else {
         console.error(error)
@@ -62,6 +68,7 @@ export function ChatContainer({ id, initialMessages, initialSettings, initialCon
       }
       if (options.usage?.totalTokens > MAX_CONTEXT_TOKENS) {
         toast.error('Memory limit exceeded. Start a new chat.')
+        setTooLong(true)
       }
       if (options.usage?.totalTokens > MAX_CONTEXT_TOKENS * 0.90) {
         toast.warning('Very close to memory limit. Start a new chat.')
@@ -91,6 +98,7 @@ export function ChatContainer({ id, initialMessages, initialSettings, initialCon
       <Card className="w-full min-w-xs sm:min-w-sm md:min-w-md lg:min-w-2xl xl:min-w-4xl mx-auto h-screen flex flex-col border-0 bg-background overflow-hidden">
         <ChatHeader tokenUsage={tokenUsage} />
         <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
+        <ChatError status={status} tooLong={tooLong} />
           <MessageArea
             messages={messages}
             status={status}
@@ -101,9 +109,10 @@ export function ChatContainer({ id, initialMessages, initialSettings, initialCon
             setEditingMessageIndex={setEditingMessageIndex}
             setMessages={setMessages}
             reload={reload}
+            tooLong={tooLong}
           />
         </div>
-        <MessageInput input={input} setInput={setInput} append={append} status={status} />
+        <MessageInput input={input} setInput={setInput} append={append} status={status} tooLong={tooLong} />
       </Card>
       <ConfirmationModal
         open={confirmationState.open}

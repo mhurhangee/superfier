@@ -16,6 +16,7 @@ interface MessageAreaProps {
   setEditingMessageIndex: (index: number | null) => void
   setMessages: (messages: Message[]) => void
   reload: () => void
+  tooLong: boolean
 }
 
 export function MessageArea({
@@ -28,6 +29,7 @@ export function MessageArea({
   setEditingMessageIndex,
   setMessages,
   reload,
+  tooLong
 }: MessageAreaProps) {
   return (
     <CardContent className="flex-1 p-0 overflow-hidden">
@@ -46,9 +48,9 @@ export function MessageArea({
               setEditingMessageIndex={setEditingMessageIndex}
               setMessages={setMessages}
               reload={reload}
+              tooLong={tooLong}
             />
           )}
-          <ChatError status={status} />
         </div>
       </ScrollArea>
     </CardContent>

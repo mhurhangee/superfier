@@ -16,6 +16,7 @@ interface ChatMessageProps {
   status: string
   lastMessage: boolean
   setConfirmationState: SetConfirmationState
+  tooLong: boolean
 }
 
 export function ChatMessage({
@@ -24,6 +25,7 @@ export function ChatMessage({
   status,
   lastMessage,
   setConfirmationState,
+  tooLong
 }: ChatMessageProps) {
   const isUser = message.role === 'user'
   const [showActions, setShowActions] = useState(false)
@@ -34,7 +36,7 @@ export function ChatMessage({
 
   return (
     <div
-      className={`flex flex-col gap-1 py-2 ${lastMessage && status !== 'error' ? 'min-h-[calc(100vh-275px)]' : ''}`}
+      className={`flex flex-col gap-1 py-2 ${lastMessage && status !== 'error' && !tooLong? 'min-h-[calc(100vh-275px)]' : ''}`}
       key={index}
       data-message-role={message.role}
       data-message-index={index}

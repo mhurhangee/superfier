@@ -15,6 +15,7 @@ interface MessageListProps {
   setEditingMessageContent: (content: string) => void
   setMessages: (messages: Message[]) => void
   reload: () => void
+  tooLong: boolean
 }
 
 export function MessageList({
@@ -27,6 +28,7 @@ export function MessageList({
   setEditingMessageContent,
   setMessages,
   reload,
+  tooLong
 }: MessageListProps) {
   return (
     <div className="space-y-1">
@@ -55,6 +57,7 @@ export function MessageList({
                 index={index}
                 status={status}
                 setConfirmationState={setConfirmationState}
+                tooLong={tooLong}
               />
             </div>
           )
