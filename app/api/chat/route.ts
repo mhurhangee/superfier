@@ -22,7 +22,24 @@ export async function POST(req: Request) {
   const { userId } = await auth()
 
   if (!userId) {
-    throw new Error('Unauthorized')
+    return new Response('Unauthorized', { status: 401 })
+  }
+
+    // Get the current chat if it exists to check token usage
+  const existingChat = await prisma.chat.findUnique({
+    where: { id, userId },
+    select: { contextTokens: true },
+  })
+
+  if (!existingChat) {
+    return new Response('Chat not found', { status: 404 })
+  }
+
+  const currentTokenUsage = existingChat.contextTokens ?? 0
+  console.log('Current token usage:', currentTokenUsage)
+
+  if (currentTokenUsage >= 1000) {
+    return new Response('Token limit exceeded', { status: 400 })
   }
 
   const result = streamText({

@@ -42,8 +42,12 @@ export function ChatContainer({ id, initialMessages, initialSettings }: ChatCont
     sendExtraMessageFields: true,
     experimental_throttle: 50,
     onError: (error: Error) => {
-      console.error(error)
-      toast.error('An error occured, please try again!')
+      if (error.message.includes('Token limit exceeded') || error.message.includes('token limit')) {
+        toast.error('Token limit exceeded. Try shortening your message or starting a new chat.')
+      } else {
+        console.error(error)
+        toast.error('An error occurred, please try again!')
+      }
     },
   })
 
