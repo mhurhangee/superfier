@@ -1,1 +1,1 @@
-export const MAX_CONTEXT_TOKENS = 500
+export const MAX_CONTEXT_TOKENS = 20000

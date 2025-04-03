@@ -102,7 +102,7 @@ export function ChatMessage({
           setConfirmationState={setConfirmationState}
         />
       </div>
-      <Streaming status={status} lastMessage={lastMessage} index={index} />
+      <Streaming status={status} lastMessage={lastMessage} />
     </div>
   )
 }

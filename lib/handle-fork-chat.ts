@@ -8,6 +8,9 @@ export const handleForkChat = async (chatId: string, router: ReturnType<typeof u
   try {
     const response = await fetch(`/api/chat/fork/${chatId}`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
 
     if (!response.ok) {
@@ -21,6 +24,7 @@ export const handleForkChat = async (chatId: string, router: ReturnType<typeof u
 
     // Navigate programmatically without a full reload
     router.push(`/~/chat/${id}`)
+    toast.success('Chat forked successfully')
   } catch (error) {
     console.error('Error forking chat:', error)
     toast.error('Failed to fork chat')

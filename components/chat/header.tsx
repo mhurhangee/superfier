@@ -23,7 +23,7 @@ import { handleNewChat } from '@/lib/handle-new-chat'
 import { handleDeleteChat } from '@/lib/handle-delete-chat'
 import { useRouter, usePathname } from 'next/navigation'
 import { MAX_CONTEXT_TOKENS } from '@/lib/constants'
-import { handleForkChat } from '@/lib/handle-fork-chat'
+import { ForkChatModal } from '@/components/chat/fork-chat-modal'
 
 interface ChatHeaderProps {
   title?: string
@@ -38,6 +38,7 @@ export function ChatHeader({
 }: ChatHeaderProps) {
   const [isEditing, setIsEditing] = React.useState(false)
   const [chatTitle, setChatTitle] = React.useState(title)
+  const [isForkModalOpen, setIsForkModalOpen] = React.useState(false)
   const router = useRouter()
   const chatId = usePathname().split('/').pop() || ''
   // Use the chat settings context
@@ -57,7 +58,7 @@ export function ChatHeader({
     <div className="w-full flex flex-col">
       {/* Main Header Row */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ml-10">
           {isEditing ? (
             <form
               onSubmit={(e) => {
@@ -125,7 +126,7 @@ export function ChatHeader({
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => handleForkChat(chatId, router)}
+                onClick={() => setIsForkModalOpen(true)}
                 aria-label="Fork Chat"
               >
                 <GitBranch className="h-5 w-5" />
@@ -312,6 +313,9 @@ export function ChatHeader({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Fork Chat Modal */}
+      <ForkChatModal isOpen={isForkModalOpen} onOpenChange={setIsForkModalOpen} chatId={chatId} />
     </div>
   )
 }
