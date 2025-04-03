@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronUp, PlusCircle, Settings, Trash2 } from 'lucide-react'
+import { ChevronUp, PlusCircle, Settings, Trash2, Database, GitBranch } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
@@ -22,15 +22,23 @@ import {
 import { handleNewChat } from '@/lib/handle-new-chat'
 import { handleDeleteChat } from '@/lib/handle-delete-chat'
 import { useRouter, usePathname } from 'next/navigation'
+import { MAX_CONTEXT_TOKENS } from '@/lib/constants'
+import { ForkChatModal } from '@/components/chat/fork-chat-modal'
 
 interface ChatHeaderProps {
   title?: string
   onTitleChange?: (title: string) => void
+  tokenUsage?: number
 }
 
-export function ChatHeader({ title = 'New Chat', onTitleChange = () => {} }: ChatHeaderProps) {
+export function ChatHeader({
+  title = 'New Chat',
+  onTitleChange = () => {},
+  tokenUsage = 0,
+}: ChatHeaderProps) {
   const [isEditing, setIsEditing] = React.useState(false)
   const [chatTitle, setChatTitle] = React.useState(title)
+  const [isForkModalOpen, setIsForkModalOpen] = React.useState(false)
   const router = useRouter()
   const chatId = usePathname().split('/').pop() || ''
   // Use the chat settings context
@@ -50,7 +58,7 @@ export function ChatHeader({ title = 'New Chat', onTitleChange = () => {} }: Cha
     <div className="w-full flex flex-col">
       {/* Main Header Row */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ml-10">
           {isEditing ? (
             <form
               onSubmit={(e) => {
@@ -112,6 +120,19 @@ export function ChatHeader({ title = 'New Chat', onTitleChange = () => {} }: Cha
               </Button>
             </TooltipTrigger>
             <TooltipContent>Delete Chat</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsForkModalOpen(true)}
+                aria-label="Fork Chat"
+              >
+                <GitBranch className="h-5 w-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Fork Chat</TooltipContent>
           </Tooltip>
 
           <Tooltip>
@@ -233,7 +254,6 @@ export function ChatHeader({ title = 'New Chat', onTitleChange = () => {} }: Cha
                   </DropdownMenuContent>
                 </DropdownMenu>
               </Tooltip>
-
               {/* Response Length Setting */}
               <Tooltip>
                 <DropdownMenu>
@@ -267,10 +287,35 @@ export function ChatHeader({ title = 'New Chat', onTitleChange = () => {} }: Cha
                   </DropdownMenuContent>
                 </DropdownMenu>
               </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="sm"
+                    className={`h-9 gap-2 px-3 ${
+                      tokenUsage > MAX_CONTEXT_TOKENS * 0.85
+                        ? 'bg-red-800'
+                        : tokenUsage > MAX_CONTEXT_TOKENS * 0.7
+                          ? 'bg-orange-700'
+                          : tokenUsage > MAX_CONTEXT_TOKENS * 0.5
+                            ? 'bg-yellow-800'
+                            : 'bg-green-900'
+                    }`}
+                  >
+                    <Database className="h-5 w-5 inline-block" />
+                    <span className="font-normal">
+                      {((tokenUsage / MAX_CONTEXT_TOKENS) * 100).toFixed(0)}%
+                    </span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Memory Usage</TooltipContent>
+              </Tooltip>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Fork Chat Modal */}
+      <ForkChatModal isOpen={isForkModalOpen} onOpenChange={setIsForkModalOpen} chatId={chatId} />
     </div>
   )
 }

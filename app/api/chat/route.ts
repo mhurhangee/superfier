@@ -5,6 +5,7 @@ import { auth } from '@clerk/nextjs/server'
 import { modelSelector } from '@/lib/model-selector'
 import { promptBuilder } from '@/lib/prompt-builder'
 import { AnthropicProviderOptions } from '@ai-sdk/anthropic'
+import { MAX_CONTEXT_TOKENS } from '@/lib/constants'
 
 export const maxDuration = 60
 
@@ -22,7 +23,24 @@ export async function POST(req: Request) {
   const { userId } = await auth()
 
   if (!userId) {
-    throw new Error('Unauthorized')
+    return new Response('Unauthorized', { status: 401 })
+  }
+
+  // Get the current chat if it exists to check token usage
+  const existingChat = await prisma.chat.findUnique({
+    where: { id, userId },
+    select: { contextTokens: true },
+  })
+
+  if (!existingChat) {
+    return new Response('Chat not found', { status: 404 })
+  }
+
+  const currentTokenUsage = existingChat.contextTokens ?? 0
+  console.log('Current token usage:', currentTokenUsage)
+
+  if (currentTokenUsage >= MAX_CONTEXT_TOKENS) {
+    return new Response('Token limit exceeded', { status: 400 })
   }
 
   const result = streamText({
@@ -39,7 +57,7 @@ export async function POST(req: Request) {
             } satisfies AnthropicProviderOptions,
           }
         : {},
-    async onFinish({ response }) {
+    async onFinish({ response, usage }) {
       await prisma.chat.upsert({
         where: {
           id: id,
@@ -58,6 +76,7 @@ export async function POST(req: Request) {
             creativity,
             responseLength,
           },
+          contextTokens: usage?.totalTokens ?? 0,
         },
         update: {
           messages: appendResponseMessages({
@@ -70,6 +89,7 @@ export async function POST(req: Request) {
             creativity,
             responseLength,
           },
+          contextTokens: usage?.totalTokens ?? 0,
         },
       })
     },

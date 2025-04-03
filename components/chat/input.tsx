@@ -14,9 +14,10 @@ interface MessageInputProps {
   setInput: (input: string) => void
   append: (message: CreateMessage) => void
   status: 'submitted' | 'streaming' | 'ready' | 'error'
+  tooLong: boolean
 }
 
-export function MessageInput({ input, setInput, append, status }: MessageInputProps) {
+export function MessageInput({ input, setInput, append, status, tooLong }: MessageInputProps) {
   return (
     <CardFooter className="sticky bottom-0 z-10 rounded-bl-xl rounded-br-xl">
       <form
@@ -36,7 +37,7 @@ export function MessageInput({ input, setInput, append, status }: MessageInputPr
           onChange={(e) => setInput(e.target.value)}
           placeholder={'Type your message...'}
           className="w-full min-h-[80px] max-h-[160px] resize-none pr-14 bg-background/50 focus:bg-background"
-          disabled={status !== 'ready' && status !== 'error'}
+          disabled={(status !== 'ready' && status !== 'error') || tooLong}
           autoFocus
           autoComplete="off"
           withCounter
@@ -57,7 +58,7 @@ export function MessageInput({ input, setInput, append, status }: MessageInputPr
           type="submit"
           size="icon"
           className="absolute right-3 top-3 h-10 w-10 rounded-full shadow-sm"
-          disabled={(status !== 'ready' && status !== 'error') || input.trim() === ''}
+          disabled={(status !== 'ready' && status !== 'error') || input.trim() === '' || tooLong}
         >
           {status === 'submitted' || status === 'streaming' ? (
             <Loader2 className="h-4 w-4 animate-spin" />

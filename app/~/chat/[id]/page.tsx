@@ -27,15 +27,22 @@ export default async function ChatPage({ params }: { params: Promise<{ id: strin
 
   const loadedMessages = loadedChat?.messages as unknown as Message[]
   const loadedSettings = loadedChat?.settings as unknown as ChatSettings
+  const loadedContextTokens = loadedChat?.contextTokens as unknown as number
 
   return (
-    <Suspense fallback={<Loader2 className="size-8 animate-spin" />}>
+    <Suspense
+      fallback={
+        <div className="flex h-full w-full items-center justify-center">
+          <Loader2 className="size-12 animate-spin" />
+        </div>
+      }
+    >
       <ChatContainer
         id={id}
         initialMessages={loadedMessages || []}
         initialSettings={loadedSettings}
+        initialContextTokens={loadedContextTokens || 0}
       />
-      sa
     </Suspense>
   )
 }

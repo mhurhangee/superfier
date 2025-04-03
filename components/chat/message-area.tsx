@@ -2,7 +2,6 @@ import { CardContent } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { EmptyState } from '@/components/chat/empty'
 import { MessageList } from '@/components/chat/message-list'
-import { ChatError } from '@/components/chat/error'
 import { Message } from '@ai-sdk/react'
 import { SetConfirmationState } from './confirmation-modal'
 
@@ -16,6 +15,7 @@ interface MessageAreaProps {
   setEditingMessageIndex: (index: number | null) => void
   setMessages: (messages: Message[]) => void
   reload: () => void
+  tooLong: boolean
 }
 
 export function MessageArea({
@@ -28,19 +28,18 @@ export function MessageArea({
   setEditingMessageIndex,
   setMessages,
   reload,
+  tooLong,
 }: MessageAreaProps) {
-  const lastAssistantMessageIndex = messages.findLastIndex((m) => m.role === 'assistant')
   return (
-    <CardContent className="flex-1 p-0 pt-6 overflow-hidden">
-      <ScrollArea className="h-full px-6 scroll-smooth">
-        <div className="space-y-4 pb-2">
+    <CardContent className="flex-1 p-0 overflow-hidden">
+      <ScrollArea className="h-full scroll-smooth">
+        <div className="space-y-4">
           {messages.length === 0 ? (
             <EmptyState />
           ) : (
             <MessageList
               messages={messages}
               status={status}
-              lastAssistantMessageIndex={lastAssistantMessageIndex}
               setConfirmationState={setConfirmationState}
               editingMessageIndex={editingMessageIndex}
               editingMessageContent={editingMessageContent}
@@ -48,10 +47,9 @@ export function MessageArea({
               setEditingMessageIndex={setEditingMessageIndex}
               setMessages={setMessages}
               reload={reload}
+              tooLong={tooLong}
             />
           )}
-
-          <ChatError status={status} />
         </div>
       </ScrollArea>
     </CardContent>

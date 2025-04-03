@@ -6,7 +6,7 @@ export default function OrgsLayout({ children }: { children: React.ReactNode }) 
     <>
       <DashSidebar />
       <SidebarInset>
-        <SidebarTrigger className="mt-4 absolute" />
+        <SidebarTrigger className="mt-7 absolute" />
         {children}
       </SidebarInset>
     </>
